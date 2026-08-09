@@ -1,0 +1,45 @@
+{
+  "verified_on": "2026-08-08",
+  "sources": [
+    {
+      "id": "dkp_microgrid",
+      "name": "DKA Solar Centre — DKP Microgrid/BESS",
+      "landing_url": "https://www.dkasolarcentre.com.au/download?location=dkp-microgrid",
+      "link_pattern": "(?i)(dkp|microgrid).*(2024|2025).*(csv|zip|xlsx)$",
+      "tier": "A",
+      "licence_url": "https://dkasolarcentre.com.au/download/terms-conditions",
+      "commercial_status": "written_permission_required_before_commercial_training_or_redistribution",
+      "required": true
+    },
+    {
+      "id": "dkasc_arrays",
+      "name": "DKA Solar Centre — DKASC arrays",
+      "landing_url": "https://www.dkasolarcentre.com.au/download",
+      "link_pattern": "(?i)(dkasc|alice).*(2018|2019|2020|2021).*(csv|zip|xlsx)$",
+      "tier": "A",
+      "licence_url": "https://dkasolarcentre.com.au/download/terms-conditions",
+      "commercial_status": "display_limit_and_attribution_apply",
+      "required": true
+    },
+    {
+      "id": "nga_factors_2025",
+      "name": "DCCEEW — National Greenhouse Accounts Factors 2025",
+      "landing_url": "https://www.dcceew.gov.au/climate-change/publications/national-greenhouse-accounts-factors-2025",
+      "link_pattern": "(?i)national-greenhouse-account.*2025.*xlsx$",
+      "tier": "A",
+      "licence_url": "https://www.dcceew.gov.au/about/copyright",
+      "commercial_status": "public_source_with_attribution",
+      "required": true
+    },
+    {
+      "id": "cqu_fault_data",
+      "name": "CQU — Desert Knowledge Australia Solar Centre Fault Data",
+      "landing_url": "https://researchdata.edu.au/desert-knowledge-australia-fault-data/2921455",
+      "link_pattern": "(?i)(fault|dka).*(csv|zip|xlsx)$",
+      "tier": "B",
+      "licence_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "commercial_status": "non_commercial_benchmark_only",
+      "required": false
+    }
+  ]
+}

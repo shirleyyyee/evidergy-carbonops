@@ -1,0 +1,83 @@
+openapi: 3.1.0
+info:
+  title: Periscope Energy CarbonOps API
+  version: 0.1.0
+  description: Read-only operational analytics API. Model outputs are evidence, not deterministic root cause or control instructions.
+servers:
+  - url: /api/v1
+security:
+  - chatgptSession: []
+paths:
+  /sites:
+    get:
+      summary: List sites available to the authenticated user
+      responses:
+        "200": { description: Site collection }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /sites/{siteId}/summary:
+    get:
+      summary: Get the latest operational summary
+      parameters: [{ $ref: "#/components/parameters/SiteId" }]
+      responses:
+        "200": { description: Latest power, data health and alert counts }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /sites/{siteId}/alerts:
+    get:
+      summary: List evidence-ranked alerts
+      parameters:
+        - { $ref: "#/components/parameters/SiteId" }
+        - name: status
+          in: query
+          schema: { type: string, enum: [open, investigating, resolved] }
+      responses:
+        "200": { description: Alert collection }
+  /sites/{siteId}/carbon:
+    get:
+      summary: Return the versioned carbon ledger
+      parameters:
+        - { $ref: "#/components/parameters/SiteId" }
+        - name: format
+          in: query
+          schema: { type: string, enum: [json, csv], default: json }
+      responses:
+        "200": { description: Ledger entries or CSV export }
+  /alerts/{alertId}/actions:
+    post:
+      summary: Append a human action to an alert audit trail
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action: { type: string, enum: [acknowledge, investigate, resolve, false_positive] }
+                note: { type: string, maxLength: 1000 }
+      responses:
+        "201": { description: Action persisted and audit event appended }
+        "400": { description: Invalid action }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+components:
+  securitySchemes:
+    chatgptSession:
+      type: apiKey
+      in: cookie
+      name: platform-session
+      description: Dispatch-owned Sign in with ChatGPT session. The app never reads this cookie directly.
+  parameters:
+    SiteId:
+      name: siteId
+      in: path
+      required: true
+      schema: { type: string }
+  responses:
+    Unauthorized:
+      description: Authentication required
+    NotFound:
+      description: Requested site or entity was not found
