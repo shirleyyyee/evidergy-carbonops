@@ -1,5 +1,7 @@
 # Periscope Energy CarbonOps MVP
 
+Repository: https://github.com/shirleyyyee/periscope-energy-carbonops · Live technical validation record (GitHub Pages, no login required): https://shirleyyyee.github.io/periscope-energy-carbonops/
+
 Evidence-first, read-only microgrid intelligence for Australian commercial precincts. The MVP implements sign-in-gated product routes, nine operator workspaces, protected JSON/CSV APIs, a D1 audit trail, public-data acquisition helpers and reference analytics for energy balance, probabilistic forecasting, PV/BESS evidence and Scope 2 — **backtested end-to-end on a real, checksummed public dataset** (see `docs/REFERENCE_DATASET.md`), not synthetic demo data.
 
 The system spans four languages, each matched to a real component of the Data Hub
