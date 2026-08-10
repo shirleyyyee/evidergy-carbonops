@@ -58,3 +58,6 @@ bms-connector-java/build/
 __pycache__/
 *.pyc
 data_processed/reference_2016/*.pt
+
+# TypeScript build cache
+*.tsbuildinfo
