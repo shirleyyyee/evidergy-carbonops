@@ -15,7 +15,7 @@ export default function PvHealthPage() {
         <KpiCard label="False-positive rate" value={pvEvidence.false_positive_rate_pct_on_clean_daytime.toFixed(2)} unit="%" tone="cyan" trend="On clean real intervals" detail="Backtest, not live production" />
       </div>
       <Panel title="Reference PV system" description="Weather correction + fault-injection validation (only one instrumented system in this public dataset)">
-        <div className="assetCards">{pvArrays.map((array) => <article key={array.name}><div><span>{array.name}</span><Badge tone="good">{array.status}</Badge></div><strong>{array.actualKw} <em>kWh today</em></strong><small>{array.note}</small><Progress value={array.health} tone={array.health < 75 ? "red" : array.health < 95 ? "amber" : "green"} label={`Health ${array.health}%`} /></article>)}</div>
+        <div className="assetCards">{pvArrays.map((array) => <article className="assetCard" key={array.name}><div><span>{array.name}</span><Badge tone="good">{array.status}</Badge></div><strong>{array.actualKw} <em>kWh today</em></strong><small>{array.note}</small><Progress value={array.health} tone={array.health < 75 ? "red" : array.health < 95 ? "amber" : "green"} label={`Health ${array.health}%`} /></article>)}</div>
       </Panel>
       <div className="dashboardGrid">
         <Panel title="Real PV output, 15-minute resolution" description={`${siteAExemplarDay} · residential4 · real meter, not simulated`} className="span2"><EnergyChart points={energySeries.map((point) => ({ ...point, loadKw: point.pvKw, gridKw: 0, bessKw: 0 }))} /></Panel>

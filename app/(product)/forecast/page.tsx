@@ -4,6 +4,7 @@ import { forecastSeries, forecastWindow, loadForecastByHorizon, modelCards } fro
 
 export default function ForecastPage() {
   const oneHour = loadForecastByHorizon.find((h) => h.horizon_label === "1h")!;
+  const twentyFourHour = loadForecastByHorizon.find((h) => h.horizon_label === "24h")!;
   const peak = forecastSeries.reduce((max, p) => (p.p50 > max.p50 ? p : max), forecastSeries[0]);
   return (
     <>
@@ -22,7 +23,7 @@ export default function ForecastPage() {
         <Panel title="Horizon performance" description="Real walk-forward backtest, fixed train/validate/test split, no shuffling" className="span2"><div className="forecastTable tableLike"><div className="tableHead"><span>Horizon</span><span>MAE</span><span>90% coverage</span><span>Avg. interval width</span><span>Test intervals</span><span>Gate</span></div>{loadForecastByHorizon.map((row) => <div className="tableRow" key={row.horizon_label}><span>{row.horizon_label}</span><span>{row.mae_p50_kw} kW</span><span>{(row.p90_coverage * 100).toFixed(1)}%</span><span>{row.mean_interval_width_kw} kW</span><span>{row.test_intervals}</span><Badge tone={row.p90_coverage >= 0.85 && row.p90_coverage <= 0.95 ? "good" : "warn"}>{row.p90_coverage >= 0.85 && row.p90_coverage <= 0.95 ? "Passed" : "Outside gate"}</Badge></div>)}</div></Panel>
         <Panel title="Model cards" description="Versioned and reproducible, real backtest metrics"><div className="modelList">{modelCards.map((model) => <div key={model.name}><span>{model.status}</span><strong>{model.name}</strong><small>{model.version} · {model.metric}</small><b>{model.value}</b></div>)}</div></Panel>
       </div>
-      <MethodologyNote>Forecast target is real net load (grid import − grid export + PV) for residential4. The 24h horizon shows 77.8% coverage in this backtest — below the 85–95% target, reported here rather than hidden.</MethodologyNote>
+      <MethodologyNote>Forecast target is real net load (grid import − grid export + PV) for residential4. The 24h horizon shows {(twentyFourHour.p90_coverage * 100).toFixed(1)}% coverage in this backtest (after split-conformal interval calibration) — below the 85–95% target, reported here rather than hidden.</MethodologyNote>
     </>
   );
 }

@@ -13,7 +13,12 @@ function linePath(values: number[], max: number, min = 0) {
 }
 
 export function EnergyChart({ points }: { points: EnergyPoint[] }) {
-  const max = Math.max(...points.flatMap((point) => [point.loadKw, point.pvKw, point.gridKw]), 320);
+  // Headroom above the real peak, not a fixed floor -- this reference dataset is a
+  // real household/small-commercial site (single-digit kW), not a precinct-scale
+  // system, so a hardcoded floor (previously 320) swamped the real range and
+  // rendered every line as a flat sliver against the axis.
+  const realMax = Math.max(...points.flatMap((point) => [point.loadKw, point.pvKw, point.gridKw, point.bessKw]), 0);
+  const max = realMax * 1.15 || 1;
   const labels = [0, 12, 24, 36, 47];
   return (
     <div className="chartWrap">
@@ -31,7 +36,8 @@ export function EnergyChart({ points }: { points: EnergyPoint[] }) {
 }
 
 export function ForecastChart({ points }: { points: ForecastPoint[] }) {
-  const max = Math.max(...points.map((point) => point.p95), 300);
+  const realMax = Math.max(...points.map((point) => point.p95), 0);
+  const max = realMax * 1.15 || 1;
   const upper = points.map((point) => point.p95);
   const lower = points.map((point) => point.p05);
   const upperPath = linePath(upper, max);
@@ -51,7 +57,8 @@ export function ForecastChart({ points }: { points: ForecastPoint[] }) {
 }
 
 export function CarbonBars({ months }: { months: CarbonMonth[] }) {
-  const max = Math.max(...months.map((month) => month.emissionsTco2e), 50);
+  const realMax = Math.max(...months.map((month) => Math.max(month.emissionsTco2e, month.avoidedTco2e)), 0);
+  const max = realMax * 1.15 || 1;
   return (
     <div className="barChart" role="img" aria-label="Monthly Scope 2 emissions and avoided emissions">
       {months.map((month) => (
