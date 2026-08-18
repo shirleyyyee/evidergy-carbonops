@@ -28,6 +28,17 @@ def load_report() -> dict:
     return json.loads((DATA / "backtest_report.json").read_text(encoding="utf-8"))
 
 
+def load_bms_connector_evidence() -> dict | None:
+    """Real evidence written by bms-connector-java's own EndToEndRealDataTest run
+    (see EndToEndRealDataTest.java::writeEvidence) -- optional, since a fresh clone
+    may not have run the Java test suite yet; the UI must handle its absence rather
+    than block on Java being installed."""
+    path = DATA / "bms_connector_evidence.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def pick_best_day(frame: pd.DataFrame, required_cols: list[str], score_col: str, window=("2016-11-01", "2016-12-31")) -> str:
     """Pick the calendar day within `window` with complete data on required_cols
     and the highest total of score_col (ties broken by date)."""
@@ -84,6 +95,7 @@ def build_daily_soc_series(day_bess_kw: pd.Series, capacity_kwh: float, start_so
 def main() -> None:
     report = load_report()
     modules = report["modules"]
+    bms_connector_evidence = load_bms_connector_evidence()
 
     residential = pd.read_csv(DATA / "residential4_2016_normalised.csv", index_col=0, parse_dates=True)
     industrial = pd.read_csv(DATA / "industrial2_2016_normalised.csv", index_col=0, parse_dates=True)
@@ -309,6 +321,7 @@ def main() -> None:
         energy_series=energy_series,
         bess_series=bess_series,
         edge_state_timeline=edge_state_timeline,
+        bms_connector_evidence=bms_connector_evidence,
         forecast_series=forecast_series,
         forecast_window=(forecast_window_start, forecast_window_end),
         carbon_months=carbon_months,
@@ -416,6 +429,9 @@ export const edgeStateRecognition = {j(modules['edge_state_recognition'])};
 
 /** Same exemplar day as bessSeries above (site_b_day), sliced from a full-year classification so debounce state carries correctly across midnight. */
 export const edgeStateTimeline = {j(kw['edge_state_timeline'])};
+
+/** Real evidence from bms-connector-java's own EndToEndRealDataTest run (a real HTTP replay against a live server, not a fabricated summary) -- null if that Java test suite hasn't been run yet on this checkout. See bms-connector-java/README.md. */
+export const bmsConnectorEvidence = {j(kw['bms_connector_evidence'])};
 
 export const energyBalance = {j(modules['energy_balance'])};
 export const dataQuality = {j(modules['data_quality'])};

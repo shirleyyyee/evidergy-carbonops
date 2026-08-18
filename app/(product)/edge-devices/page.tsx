@@ -1,5 +1,5 @@
 import { Badge, KpiCard, MethodologyNote, PageHeader, Panel } from "@/components/ui";
-import { edgeStateRecognition, edgeStateTimeline, siteBExemplarDay } from "@/lib/reference-dataset";
+import { bmsConnectorEvidence, edgeStateRecognition, edgeStateTimeline, siteBExemplarDay } from "@/lib/reference-dataset";
 
 const STATE_COLOR: Record<string, string> = {
   RUN: "var(--green)",
@@ -15,9 +15,9 @@ export default function EdgeDevicesPage() {
   return (
     <>
       <PageHeader
-        eyebrow="C++ edge collector · real Modbus round-trip"
+        eyebrow="Data Hub connectivity · C++ edge collector + Java BMS connector"
         title="Edge devices & run-state recognition"
-        description="A field-gateway prototype (evidergy-edge-collector, C++17) decodes real Modbus TCP telemetry and classifies equipment RUN / OFF / IDLE state at the edge — the same generic algorithm cross-checked in an independent Python implementation on the same real data."
+        description="The Data Hub's two field-connectivity prototypes: a C++ edge gateway that decodes real Modbus TCP telemetry and classifies equipment RUN / OFF / IDLE state, and a Java REST gateway that validates BMS/OPC-UA-forwarded telemetry — both proven against the same real reference dataset, not a mockup."
       />
       <div className="kpiGrid">
         <KpiCard label="RUN" value={(dist.RUN ?? 0).toFixed(1)} unit="%" tone="green" detail="Real full-year 2016, industrial2 bess_kw" />
@@ -61,11 +61,45 @@ export default function EdgeDevicesPage() {
         </div>
       </Panel>
 
+      {bmsConnectorEvidence ? (
+        <Panel
+          title="Java BMS / OPC-UA connector — real HTTP replay"
+          description={bmsConnectorEvidence.site}
+        >
+          <div className="kpiGrid" style={{ marginBottom: 0 }}>
+            <KpiCard label="Real intervals replayed" value={bmsConnectorEvidence.intervals_replayed.toLocaleString()} tone="cyan" detail="Live HTTP POST /ingest against a real server instance" />
+            <KpiCard label="Accepted" value={bmsConnectorEvidence.accepted_count.toLocaleString()} unit={`/${bmsConnectorEvidence.intervals_replayed}`} tone="green" detail="100% of real, valid intervals" />
+            <KpiCard label="Duplicate rejection" value={String(bmsConnectorEvidence.duplicate_rejected_status)} tone="amber" detail="Re-submitting a real interval is correctly rejected" />
+            <KpiCard label="Malformed rejection" value={String(bmsConnectorEvidence.malformed_rejected_status)} detail="Invalid JSON is correctly rejected, not silently dropped" />
+          </div>
+          <table className="metricTable" style={{ marginTop: 14 }}>
+            <tbody>
+              <tr><td>Endpoint</td><td>{bmsConnectorEvidence.endpoint}</td></tr>
+              <tr><td>Clock-skew tolerance</td><td>{bmsConnectorEvidence.max_clock_skew_seconds}s</td></tr>
+              <tr><td>Plausible temperature range</td><td>{bmsConnectorEvidence.min_plausible_temperature_c}°C to {bmsConnectorEvidence.max_plausible_temperature_c}°C</td></tr>
+              <tr><td>Plausible irradiance range</td><td>0 to {bmsConnectorEvidence.max_plausible_irradiance_wm2} W/m²</td></tr>
+            </tbody>
+          </table>
+          <div style={{ marginTop: 14 }}>
+            <Badge tone="info">bms-connector-java — EndToEndRealDataTest.java</Badge>
+          </div>
+        </Panel>
+      ) : (
+        <Panel title="Java BMS / OPC-UA connector" description="Evidence not yet generated on this checkout">
+          <p style={{ fontSize: 11, color: "#7c8b97" }}>
+            Run <code>powershell bms-connector-java/scripts/build-and-test.ps1</code> to produce real evidence here
+            (writes <code>data_processed/reference_2016/bms_connector_evidence.json</code> from an actual HTTP
+            replay, then re-run <code>python data_pipeline/generate_reference_ts.py</code>).
+          </p>
+        </Panel>
+      )}
+
       <MethodologyNote>
         {edgeStateRecognition.method} {edgeStateRecognition.note} The C++ and Python implementations were run
         independently against the same real telemetry and produce an identical state distribution — see{" "}
         <code>edge-collector-cpp/tests/test_run_state_real_data.cpp</code> and the <code>edge_state_recognition</code>{" "}
-        module in <code>backtest_report.json</code>.
+        module in <code>backtest_report.json</code>. The Java BMS connector&rsquo;s numbers above come from{" "}
+        {bmsConnectorEvidence?.note ?? "a real end-to-end HTTP replay against the live server"}
       </MethodologyNote>
     </>
   );

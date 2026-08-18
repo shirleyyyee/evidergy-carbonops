@@ -136,7 +136,12 @@ official register map.
 A dependency-free JDK-only REST/JSON ingest gateway standing in for a BMS/OPC-UA-to-
 REST bridge (`com.sun.net.httpserver.HttpServer`, loopback-only, no Maven/Gradle).
 Validated end-to-end by replaying 500 real intervals from the same reference dataset
-over real HTTP, including duplicate (409) and malformed-payload (400) rejection.
+over real HTTP, including duplicate (409) and malformed-payload (400) rejection. That
+test run also writes a small real evidence file
+(`data_processed/reference_2016/bms_connector_evidence.json`) that
+`generate_reference_ts.py` picks up and surfaces on `/edge-devices` alongside the C++
+collector's run-state evidence -- real Java test output feeding the live product, not
+a decorative summary.
 
 ```powershell
 powershell bms-connector-java/scripts/build-and-test.ps1

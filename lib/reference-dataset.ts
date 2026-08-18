@@ -2832,6 +2832,21 @@ export const edgeStateTimeline = [
   }
 ];
 
+/** Real evidence from bms-connector-java's own EndToEndRealDataTest run (a real HTTP replay against a live server, not a fabricated summary) -- null if that Java test suite hasn't been run yet on this checkout. See bms-connector-java/README.md. */
+export const bmsConnectorEvidence = {
+  "site": "residential4 (real whole-building identity load, 2016)",
+  "endpoint": "POST /ingest (JSON), GET /health",
+  "intervals_replayed": 500,
+  "accepted_count": 500,
+  "duplicate_rejected_status": 409,
+  "malformed_rejected_status": 400,
+  "max_clock_skew_seconds": 300,
+  "min_plausible_temperature_c": -60.0,
+  "max_plausible_temperature_c": 65.0,
+  "max_plausible_irradiance_wm2": 1400.0,
+  "note": "Real HTTP replay of 500 real intervals against a live BmsIngestServer instance -- see EndToEndRealDataTest.java. Not a fabricated summary."
+};
+
 export const energyBalance = {
   "site": "residential4 (real grid/PV/appliance meters, 2016)",
   "identity_check": {

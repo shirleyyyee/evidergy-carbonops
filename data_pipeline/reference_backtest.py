@@ -695,6 +695,21 @@ def main() -> None:
     report["modules"]["scope2"] = module_scope2(residential)
 
     report_path = OUT / "backtest_report.json"
+    # deep_forecast.py adds "deep_learning_forecast" via its own read-modify-write on
+    # this same file; without this, a bare re-run of *this* script silently drops that
+    # module (it happened twice during development -- see docs/REFERENCE_DATASET.md).
+    # Carry it forward across a re-run rather than lose it; deep_forecast.py itself
+    # remains the source of truth whenever the feature engineering, model or data
+    # actually changes, since re-running it overwrites this preserved copy anyway.
+    if report_path.exists():
+        try:
+            previous = json.loads(report_path.read_text(encoding="utf-8"))
+            if "deep_learning_forecast" in previous.get("modules", {}):
+                report["modules"]["deep_learning_forecast"] = previous["modules"]["deep_learning_forecast"]
+                print("Preserved deep_learning_forecast from the previous report -- "
+                      "re-run data_pipeline/deep_forecast.py if its inputs changed.")
+        except (json.JSONDecodeError, OSError):
+            pass  # no valid previous report to preserve from -- fine on a fresh clone
     report_path.write_text(json.dumps(report, indent=2, default=str), encoding="utf-8")
     print(f"Wrote {report_path}")
 
