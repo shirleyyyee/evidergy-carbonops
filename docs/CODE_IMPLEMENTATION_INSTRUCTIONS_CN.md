@@ -276,7 +276,7 @@ D1 表包括 sites、site_memberships、assets、data_sources、alerts、alert_a
 
 ### Sprint 0.5（已完成，2026-08-09）：公开参考数据集回测
 
-在 DKP/DKASC 商业授权尚未取得前，用 Open Power System Data household_data（CC-BY，真实德国 Konstanz 智能电表数据，含一个真实光储案例）、Open-Meteo 历史天气与 DCCEEW NGA Factors 2025（真实 NT/DKIS 因子 0.56 kg CO₂-e/kWh）跑通 `data_pipeline/core_models.py` 全部算法：能量平衡（恒等式 100% + 真实子表覆盖率 65.7%）、数据质量门（真实缺失 31.6%）、概率负荷预测（1h P90 覆盖 86.5%，24h 降到 77.8%，如实报告未达标）、PV 证据（故障注入召回 88.0%）、BESS 证据（故障注入召回 82.5%，现场校准死区 0.2 kW）、Scope 2（100% 复算一致）。方法论、局限性和可复现命令见 `docs/REFERENCE_DATASET.md`；结果实时呈现在 `/methodology` 页面。这满足 PERIscope 报名对 TRL4 的字面要求（"proof of concept has been validated ... with representative data"），但明确不等同于 Alice Springs 试点结果。
+在 DKP/DKASC 商业授权尚未取得前，用 Open Power System Data household_data（CC-BY，真实德国 Konstanz 智能电表数据，含一个真实光储案例）、Open-Meteo 历史天气与 DCCEEW NGA Factors 2025（真实 NT/DKIS 因子 0.56 kg CO₂-e/kWh）跑通 `data_pipeline/core_models.py` 全部算法：能量平衡（恒等式 100% + 真实子表覆盖率 65.7%）、数据质量门（真实缺失 31.6%）、概率负荷预测（1h P90 覆盖 89.4%，24h 经 split-conformal 区间校准后从 77.8% 提升到 81.8%，仍如实报告未达标）、PV 证据（故障注入召回 88.0%）、BESS 证据（故障注入召回 82.5%，现场校准死区 0.2 kW）、Scope 2（100% 复算一致）。方法论、局限性和可复现命令见 `docs/REFERENCE_DATASET.md`；结果实时呈现在 `/methodology` 页面。这满足 PERIscope 报名对 TRL4 的字面要求（"proof of concept has been validated ... with representative data"），但明确不等同于 Alice Springs 试点结果。
 
 ### Sprint 1：真实公开数据（2 周）
 

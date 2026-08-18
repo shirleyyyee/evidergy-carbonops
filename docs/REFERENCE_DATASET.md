@@ -74,10 +74,22 @@ Nothing is injected to look clean.
 
 **Probabilistic load forecast.** Real target (`grid_import − grid_export + PV` for
 `residential4`), a fixed, non-shuffled rolling-origin split (train 01 Jan–31 Aug,
-validate 01 Sep–31 Oct [reserved], test 01 Nov–31 Dec 2016), real calendar and weather
+validate 01 Sep–31 Oct, test 01 Nov–31 Dec 2016), real calendar and weather
 features. A separate walk-forward backtest is run per horizon (1h/6h/12h/24h — feature
 lags are anchored at time *t*, only the target is shifted forward, so there is no
 leakage at any horizon). Fully real, non-circular.
+
+The validate split (previously reserved but unused) is now used for split-conformal
+(CQR) prediction-interval calibration: for each horizon, the P05/P95 edges are widened
+by a delta measured on validate alone, then applied to test — a standard, honest
+technique (Romano, Patterson & Candès 2019), never fitted on the test data it is
+applied to. See `core_models.conformal_interval_delta`. This genuinely improved 24h
+P90 coverage from 77.8% to 81.8% but did not fully close the gap to the 85–95% target —
+the most likely explanation is real seasonal distribution shift between the Sep–Oct
+calibration window and the Nov–Dec test window, which conformal calibration's coverage
+guarantee assumes away (exchangeability) and which becomes more pronounced the further
+ahead the horizon reaches. Reported honestly rather than re-tuned until the number
+looked right.
 
 **Deep learning forecaster.** A 2-layer LSTM with three quantile output heads
 (pinball loss, PyTorch) trained on the identical fixed, non-shuffled split as the
@@ -125,7 +137,7 @@ authoritative, regenerable numbers)
 | Energy balance identity | 100% | ≥95% |
 | Metering completeness (real submeters) | 65.7% | — (diagnostic, not a gate) |
 | Data quality — real missingness (industrial2 storage) | 31.6% | — (genuine, reported) |
-| Load forecast, 1h horizon — P90 coverage | 86.5% (1h) / 96.9% (6h) / 93.9% (12h) / 77.8% (24h) | 85–95% |
+| Load forecast, conformal-calibrated — P90 coverage | 89.4% (1h) / 96.9% (6h) / 93.9% (12h) / 81.8% (24h) | 85–95% |
 | Deep learning (LSTM) forecast — P50 MAE / P90 coverage | 0.496 kW / 88.1% (baseline: 0.598 kW / 86.5%) | beats baseline on MAE, in 85–95% band |
 | PV known-event recall (fault-injected) | 88.0% | ≥80% |
 | PV false-positive rate (clean real intervals) | 2.08% | — |
@@ -133,9 +145,11 @@ authoritative, regenerable numbers)
 | BESS round-trip efficiency (real, full year) | 58.7% | — (real, not adjusted for standby losses) |
 | Scope 2 recompute consistency | 100% | 100% |
 
-The 24-hour forecast horizon (77.8% coverage) is **below** the 85–95% target. This is
-reported here rather than hidden, and is a concrete, scoped item for the real-pilot
-phase (more/better long-horizon features, or a wider calibration band at 24h).
+The 24-hour forecast horizon (81.8% coverage after conformal calibration, up from an
+uncalibrated 77.8%) is **still below** the 85–95% target. This is reported here rather
+than hidden, and is a concrete, scoped item for the real-pilot phase — most likely
+requiring either more/better long-horizon features, or recalibration against a
+validate window closer in season to the deployment period than a fixed Sep–Oct slice.
 
 ## Reproducing this record
 
@@ -172,7 +186,8 @@ re-download can be verified byte-for-byte.
    held-out telemetry, not real labelled incident reports.
 4. The BESS state-of-charge series is an indicative charge-tracking index, not an OEM
    SOC signal.
-5. The 24-hour forecast horizon is below the BP coverage target in this backtest.
+5. The 24-hour forecast horizon (81.8% P90 coverage, after split-conformal calibration
+   using the validate split) remains below the BP coverage target in this backtest.
 6. `residential4` and `industrial2` are a real household and a real small commercial
    site, not an Australian commercial precinct at the scale the product ultimately
    targets — the point of this record is methodology validation on real data, not a

@@ -421,7 +421,7 @@ export const limitations = [
   "Energy-balance 'pass rate' validates the sign-convention/unit-conversion code path against the meter identity (no independent redundant metering exists in this public dataset), reported separately from real submetering completeness.",
   "PV and BESS known-event recall are measured via synthetic fault injection into real held-out telemetry (fixed random seed), not real labelled incident reports.",
   "The BESS state-of-charge series is an indicative charge-tracking index derived from real charge/discharge energy and a data-driven capacity estimate; OPSD does not publish an OEM SOC signal.",
-  "The 24-hour forecast horizon shows p90 coverage of 77.8% in this backtest, below the 85-95% BP target -- flagged here rather than hidden; see docs/REFERENCE_DATASET.md.",
+  "The 24-hour forecast horizon shows p90 coverage of {modules['load_forecast_by_horizon'][3]['p90_coverage']*100:.1f}% in this backtest -- improved from an uncalibrated 77.8% via split-conformal interval calibration (see 'conformal_delta_kw' in backtest_report.json), but still below the 85-95% BP target, most likely genuine seasonal distribution shift between the Sep-Oct calibration window and the Nov-Dec test window at this horizon -- flagged here rather than hidden; see docs/REFERENCE_DATASET.md.",
 ] satisfies string[];
 """
 

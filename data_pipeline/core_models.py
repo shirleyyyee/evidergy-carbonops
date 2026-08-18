@@ -48,6 +48,31 @@ def forecast_metrics(actual: pd.Series, forecast: pd.DataFrame) -> dict[str, flo
     return {"mae_p50_kw": float((aligned.actual - aligned.p50).abs().mean()), "p90_coverage": float(((aligned.actual >= aligned.p05) & (aligned.actual <= aligned.p95)).mean()), "mean_interval_width_kw": float((aligned.p95 - aligned.p05).mean()), "median_bias_kw": float((aligned.p50 - aligned.actual).median())}
 
 
+def conformal_interval_delta(actual: pd.Series, prediction: pd.DataFrame, target_coverage: float = 0.90) -> float:
+    """Split-conformal (CQR) calibration delta: how far the p05/p95 edges need to widen,
+    symmetrically, so the interval hits target_coverage on THIS set. Must be computed on a
+    held-out calibration split (never the test split it is later applied to) -- that is what
+    keeps it honest rather than fitted-to-the-answer. Standard conformalized quantile
+    regression (Romano, Patterson & Candes 2019); the nonconformity score is the worst-side
+    miss (actual outside p05 or p95), and the delta is its finite-sample-corrected quantile."""
+    aligned = pd.concat([actual.rename("actual"), prediction[["p05", "p95"]]], axis=1).dropna()
+    n = len(aligned)
+    if n == 0:
+        return 0.0
+    low_miss = (aligned.p05 - aligned.actual).clip(lower=0)
+    high_miss = (aligned.actual - aligned.p95).clip(lower=0)
+    nonconformity = np.maximum(low_miss, high_miss)
+    level = min(1.0, np.ceil((n + 1) * target_coverage) / n)
+    return float(nonconformity.quantile(level))
+
+
+def apply_interval_delta(prediction: pd.DataFrame, delta: float) -> pd.DataFrame:
+    calibrated = prediction.copy()
+    calibrated["p05"] = calibrated["p05"] - delta
+    calibrated["p95"] = calibrated["p95"] + delta
+    return calibrated
+
+
 def pv_underperformance(actual_kw: pd.Series, expected_p50_kw: pd.Series, expected_p05_kw: pd.Series, interval_hours: float = 1/12, persistence: int = 6) -> pd.DataFrame:
     candidate = actual_kw < expected_p05_kw
     persistent = candidate.rolling(persistence, min_periods=persistence).sum().eq(persistence)

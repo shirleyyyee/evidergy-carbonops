@@ -249,13 +249,13 @@
     </div>
     <div class="kpi">
       <div class="lbl">Forecast coverage, 1h <span class="chip good">Pass</span></div>
-      <div class="val">86.5<small>%</small></div>
-      <div class="note">Target 85–95% · real walk-forward backtest</div>
+      <div class="val">89.4<small>%</small></div>
+      <div class="note">Target 85–95% · conformal-calibrated, real walk-forward backtest</div>
     </div>
     <div class="kpi">
       <div class="lbl">Forecast coverage, 24h <span class="chip warn">Below target</span></div>
-      <div class="val">77.8<small>%</small></div>
-      <div class="note">Target 85–95% · reported, not hidden</div>
+      <div class="val">81.8<small>%</small></div>
+      <div class="note">Target 85–95% · up from 77.8% pre-calibration, reported not hidden</div>
     </div>
     <div class="kpi">
       <div class="lbl">Metering completeness</div>
@@ -273,17 +273,19 @@
 <section class="wrap" id="forecast">
   <h2>Forecast calibration by horizon</h2>
   <p class="sdesc">
-    P90 empirical coverage of the calibrated interval, real walk-forward backtest, four horizons. The shaded
-    band is the business plan's own 85–95% target; the marker is what actually happened on held-out real data.
+    P90 empirical coverage of the interval, real walk-forward backtest, four horizons — each interval widened by a
+    split-conformal (CQR) delta measured on the real validate split (never on the test split it's applied to; see
+    docs/REFERENCE_DATASET.md). The shaded band is the business plan's own 85–95% target; the marker is what
+    actually happened on held-out real data.
   </p>
   <div class="rangeChart">
     <div class="rangeRow">
       <div class="rlabel">1 hour</div>
       <div class="rangeTrack">
         <div class="rangeTarget" style="left:85%;right:5%"></div>
-        <div class="rangeMarker" style="left:86.5%"></div>
+        <div class="rangeMarker" style="left:89.4%"></div>
       </div>
-      <div class="rval">86.5%</div>
+      <div class="rval">89.4%</div>
     </div>
     <div class="rangeRow">
       <div class="rlabel">6 hours</div>
@@ -305,15 +307,15 @@
       <div class="rlabel">24 hours</div>
       <div class="rangeTrack">
         <div class="rangeTarget" style="left:85%;right:5%"></div>
-        <div class="rangeMarker fail" style="left:77.8%"></div>
+        <div class="rangeMarker fail" style="left:81.8%"></div>
       </div>
-      <div class="rval">77.8%</div>
+      <div class="rval">81.8%</div>
     </div>
   </div>
   <div class="rangeLegend">
     <span class="l1">85–95% target band</span>
     <span class="l2">Actual, within target</span>
-    <span class="l3">Actual, below target</span>
+    <span class="l3">Actual, below target (up from 77.8% pre-calibration)</span>
   </div>
 </section>
 
@@ -420,8 +422,8 @@
         <tr><td class="metric">Energy balance identity (residential4)</td><td class="tabular">100%</td><td>≥95%</td></tr>
         <tr><td class="metric">Metering completeness (real submeters)</td><td class="tabular">65.7%</td><td>diagnostic, not a gate</td></tr>
         <tr><td class="metric">Real missing intervals (industrial2 storage)</td><td class="tabular">31.6%</td><td>reported, not injected</td></tr>
-        <tr><td class="metric">Load forecast P90 coverage, 1h</td><td class="tabular">86.5%</td><td>85–95%</td></tr>
-        <tr><td class="metric">Load forecast P90 coverage, 24h</td><td class="tabular">77.8% (below target)</td><td>85–95%</td></tr>
+        <tr><td class="metric">Load forecast P90 coverage, 1h (conformal-calibrated)</td><td class="tabular">89.4%</td><td>85–95%</td></tr>
+        <tr><td class="metric">Load forecast P90 coverage, 24h (conformal-calibrated)</td><td class="tabular">81.8% (below target, was 77.8%)</td><td>85–95%</td></tr>
         <tr><td class="metric">PV known-event recall (fault-injected)</td><td class="tabular">88.0% (2.08% false-pos.)</td><td>≥80%</td></tr>
         <tr><td class="metric">BESS injected-fault recall</td><td class="tabular">82.5% (11.45% false-pos.)</td><td>≥80%</td></tr>
         <tr><td class="metric">BESS round-trip efficiency (real, full year)</td><td class="tabular">58.7%</td><td>real, not loss-adjusted</td></tr>
@@ -439,7 +441,7 @@
     <div class="item"><span class="mark">–</span><span>The energy-balance pass rate validates the sign-convention / unit-conversion code path against the meter identity; this public dataset has no independent redundant metering to test against.</span></div>
     <div class="item"><span class="mark">–</span><span>PV and BESS recall are measured by injecting synthetic, fixed-seed faults into real held-out telemetry — not real labelled incidents.</span></div>
     <div class="item"><span class="mark">–</span><span>The BESS "state of charge" is an indicative index derived from real charge/discharge energy, not an OEM SOC signal.</span></div>
-    <div class="item"><span class="mark">–</span><span>The 24-hour forecast horizon is below the coverage target in this backtest — a concrete, scoped item for the pilot phase.</span></div>
+    <div class="item"><span class="mark">–</span><span>The 24-hour forecast horizon is below the coverage target in this backtest even after split-conformal interval calibration (77.8% → 81.8%) — likely real seasonal distribution shift between the validate and test windows, a concrete, scoped item for the pilot phase.</span></div>
   </div>
 </section>
 

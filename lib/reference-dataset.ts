@@ -1791,170 +1791,170 @@ export const bessSeries: EnergyPoint[] = [
 export const forecastSeries: ForecastPoint[] = [
   {
     "label": "+1h",
-    "p05": 0.16,
+    "p05": 0.13,
     "p50": 0.34,
-    "p95": 0.72,
+    "p95": 0.75,
     "actual": 0.6
   },
   {
     "label": "+2h",
-    "p05": 0.15,
+    "p05": 0.12,
     "p50": 0.36,
-    "p95": 0.86,
+    "p95": 0.88,
     "actual": 0.57
   },
   {
     "label": "+3h",
-    "p05": 0.15,
+    "p05": 0.12,
     "p50": 0.37,
-    "p95": 0.87,
+    "p95": 0.9,
     "actual": 0.5
   },
   {
     "label": "+4h",
-    "p05": 0.16,
+    "p05": 0.13,
     "p50": 0.36,
-    "p95": 0.8,
+    "p95": 0.83,
     "actual": 0.29
   },
   {
     "label": "+5h",
-    "p05": 0.15,
+    "p05": 0.12,
     "p50": 0.35,
-    "p95": 0.46,
+    "p95": 0.49,
     "actual": 0.48
   },
   {
     "label": "+6h",
-    "p05": 0.14,
+    "p05": 0.12,
     "p50": 0.35,
-    "p95": 0.83,
+    "p95": 0.86,
     "actual": 0.26
   },
   {
     "label": "+7h",
-    "p05": 0.16,
+    "p05": 0.13,
     "p50": 0.27,
-    "p95": 0.91,
+    "p95": 0.94,
     "actual": 0.97
   },
   {
     "label": "+8h",
-    "p05": 0.15,
+    "p05": 0.13,
     "p50": 0.4,
-    "p95": 1.45,
+    "p95": 1.48,
     "actual": 0.3
   },
   {
     "label": "+9h",
-    "p05": 0.15,
+    "p05": 0.12,
     "p50": 0.38,
-    "p95": 1.36,
+    "p95": 1.39,
     "actual": 0.83
   },
   {
     "label": "+10h",
-    "p05": 0.11,
+    "p05": 0.09,
     "p50": 0.39,
-    "p95": 2.26,
+    "p95": 2.29,
     "actual": 0.38
   },
   {
     "label": "+11h",
-    "p05": 0.09,
+    "p05": 0.06,
     "p50": 0.37,
-    "p95": 1.89,
+    "p95": 1.92,
     "actual": 0.86
   },
   {
     "label": "+12h",
-    "p05": 0.06,
+    "p05": 0.03,
     "p50": 0.4,
-    "p95": 2.34,
+    "p95": 2.37,
     "actual": 2.75
   },
   {
     "label": "+13h",
-    "p05": 0.13,
+    "p05": 0.1,
     "p50": 1.15,
-    "p95": 3.29,
+    "p95": 3.32,
     "actual": 1.9
   },
   {
     "label": "+14h",
-    "p05": 0.14,
+    "p05": 0.11,
     "p50": 0.75,
-    "p95": 2.75,
+    "p95": 2.77,
     "actual": 2.14
   },
   {
     "label": "+15h",
-    "p05": 0.15,
+    "p05": 0.12,
     "p50": 1.24,
-    "p95": 3.11,
+    "p95": 3.14,
     "actual": 1.41
   },
   {
     "label": "+16h",
-    "p05": 0.14,
+    "p05": 0.11,
     "p50": 0.5,
-    "p95": 2.18,
+    "p95": 2.21,
     "actual": 2.12
   },
   {
     "label": "+17h",
-    "p05": 0.17,
+    "p05": 0.14,
     "p50": 0.98,
-    "p95": 2.66,
+    "p95": 2.69,
     "actual": 0.5
   },
   {
     "label": "+18h",
-    "p05": 0.17,
+    "p05": 0.14,
     "p50": 0.46,
-    "p95": 1.77,
+    "p95": 1.8,
     "actual": 1.01
   },
   {
     "label": "+19h",
-    "p05": 0.18,
+    "p05": 0.15,
     "p50": 0.49,
-    "p95": 1.68,
+    "p95": 1.71,
     "actual": 0.54
   },
   {
     "label": "+20h",
-    "p05": 0.21,
+    "p05": 0.19,
     "p50": 0.53,
-    "p95": 1.61,
+    "p95": 1.63,
     "actual": 0.62
   },
   {
     "label": "+21h",
-    "p05": 0.2,
+    "p05": 0.17,
     "p50": 0.52,
-    "p95": 1.69,
+    "p95": 1.72,
     "actual": 1.05
   },
   {
     "label": "+22h",
-    "p05": 0.21,
+    "p05": 0.19,
     "p50": 0.62,
-    "p95": 1.65,
+    "p95": 1.68,
     "actual": 1.2
   },
   {
     "label": "+23h",
-    "p05": 0.19,
+    "p05": 0.16,
     "p50": 0.58,
-    "p95": 1.51,
+    "p95": 1.53,
     "actual": 0.98
   },
   {
     "label": "+24h",
-    "p05": 0.19,
+    "p05": 0.16,
     "p50": 0.59,
-    "p95": 1.59,
+    "p95": 1.62,
     "actual": 0.4
   }
 ];
@@ -2173,7 +2173,7 @@ export const modelCards = [
     "name": "SITE-LOAD-QRF",
     "version": "REF-BACKTEST-v1.0.0",
     "metric": "90% coverage (1h)",
-    "value": "86.7%",
+    "value": "89.4%",
     "status": "Backtested"
   },
   {
@@ -2226,8 +2226,9 @@ export const carbonFactor = {
 export const loadForecastMetrics = {
   "site": "residential4 net load (grid_import - grid_export + pv), 2016",
   "train_intervals": 23231,
+  "validate_intervals": 5856,
   "test_intervals": 5856,
-  "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (reserved, unused in this report), test 01 Nov-31 Dec -- fixed, no shuffling",
+  "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (used for conformal interval calibration only, never seen by the fitted model), test 01 Nov-31 Dec -- fixed, no shuffling",
   "features": [
     "hour",
     "dayofweek",
@@ -2243,10 +2244,20 @@ export const loadForecastMetrics = {
     "temperature_c",
     "shortwave_wm2"
   ],
+  "conformal_calibration": {
+    "method": "split-conformal / CQR, delta measured on validate, applied to test",
+    "delta_kw": 0.029,
+    "raw_metrics_before_calibration": {
+      "mae_p50_kw": 0.598,
+      "p90_coverage": 0.865,
+      "mean_interval_width_kw": 1.871,
+      "median_bias_kw": -0.177
+    }
+  },
   "metrics": {
     "mae_p50_kw": 0.598,
-    "p90_coverage": 0.865,
-    "mean_interval_width_kw": 1.871,
+    "p90_coverage": 0.878,
+    "mean_interval_width_kw": 1.93,
     "median_bias_kw": -0.177
   }
 };
@@ -2255,15 +2266,17 @@ export const loadForecastByHorizon = [
     "horizon_label": "1h",
     "horizon_intervals": 4,
     "test_intervals": 5852,
+    "conformal_delta_kw": 0.092,
     "mae_p50_kw": 0.617,
-    "p90_coverage": 0.867,
-    "mean_interval_width_kw": 1.79,
+    "p90_coverage": 0.894,
+    "mean_interval_width_kw": 1.975,
     "median_bias_kw": -0.258
   },
   {
     "horizon_label": "6h",
     "horizon_intervals": 24,
     "test_intervals": 5832,
+    "conformal_delta_kw": 0.0,
     "mae_p50_kw": 0.61,
     "p90_coverage": 0.969,
     "mean_interval_width_kw": 2.744,
@@ -2273,6 +2286,7 @@ export const loadForecastByHorizon = [
     "horizon_label": "12h",
     "horizon_intervals": 48,
     "test_intervals": 5808,
+    "conformal_delta_kw": 0.0,
     "mae_p50_kw": 0.591,
     "p90_coverage": 0.939,
     "mean_interval_width_kw": 2.41,
@@ -2282,9 +2296,10 @@ export const loadForecastByHorizon = [
     "horizon_label": "24h",
     "horizon_intervals": 96,
     "test_intervals": 5760,
+    "conformal_delta_kw": 0.099,
     "mae_p50_kw": 0.698,
-    "p90_coverage": 0.778,
-    "mean_interval_width_kw": 1.449,
+    "p90_coverage": 0.818,
+    "mean_interval_width_kw": 1.646,
     "median_bias_kw": -0.409
   }
 ];
@@ -2449,5 +2464,5 @@ export const limitations = [
   "Energy-balance 'pass rate' validates the sign-convention/unit-conversion code path against the meter identity (no independent redundant metering exists in this public dataset), reported separately from real submetering completeness.",
   "PV and BESS known-event recall are measured via synthetic fault injection into real held-out telemetry (fixed random seed), not real labelled incident reports.",
   "The BESS state-of-charge series is an indicative charge-tracking index derived from real charge/discharge energy and a data-driven capacity estimate; OPSD does not publish an OEM SOC signal.",
-  "The 24-hour forecast horizon shows p90 coverage of 77.8% in this backtest, below the 85-95% BP target -- flagged here rather than hidden; see docs/REFERENCE_DATASET.md.",
+  "The 24-hour forecast horizon shows p90 coverage of 81.8% in this backtest -- improved from an uncalibrated 77.8% via split-conformal interval calibration (see 'conformal_delta_kw' in backtest_report.json), but still below the 85-95% BP target, most likely genuine seasonal distribution shift between the Sep-Oct calibration window and the Nov-Dec test window at this horizon -- flagged here rather than hidden; see docs/REFERENCE_DATASET.md.",
 ] satisfies string[];

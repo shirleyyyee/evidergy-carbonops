@@ -84,7 +84,9 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).parent))
 from core_models import (  # noqa: E402
     QuantileForecast,
+    apply_interval_delta,
     bess_consistency,
+    conformal_interval_delta,
     energy_balance,
     forecast_metrics,
     pv_underperformance,
@@ -338,19 +340,34 @@ def module_load_forecast(residential: pd.DataFrame, weather: pd.DataFrame) -> di
     features = pd.concat([calendar, lags, weather[["temperature_c", "shortwave_wm2"]]], axis=1)
     frame = pd.concat([target, features], axis=1).dropna()
 
-    train_mask, _validate_mask, test_mask = fixed_split(frame.index)
+    train_mask, validate_mask, test_mask = fixed_split(frame.index)
     x_cols = [c for c in features.columns]
     model = QuantileForecast().fit(frame.loc[train_mask, x_cols], frame.loc[train_mask, "net_load_kw"])
-    prediction = model.predict(frame.loc[test_mask, x_cols])
+
+    # Split-conformal (CQR) calibration: the delta is measured on the validate split
+    # (01 Sep-31 Oct, disjoint from test) and only then applied to test -- see
+    # core_models.conformal_interval_delta for why this stays honest.
+    validate_prediction = model.predict(frame.loc[validate_mask, x_cols])
+    delta_kw = conformal_interval_delta(frame.loc[validate_mask, "net_load_kw"], validate_prediction)
+
+    raw_prediction = model.predict(frame.loc[test_mask, x_cols])
+    prediction = apply_interval_delta(raw_prediction, delta_kw)
     metrics = forecast_metrics(frame.loc[test_mask, "net_load_kw"], prediction)
+    raw_metrics = forecast_metrics(frame.loc[test_mask, "net_load_kw"], raw_prediction)
 
     return {
         "site": "residential4 net load (grid_import - grid_export + pv), 2016",
         "train_intervals": int(train_mask.sum()),
+        "validate_intervals": int(validate_mask.sum()),
         "test_intervals": int(test_mask.sum()),
-        "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (reserved, unused in this report), "
-        "test 01 Nov-31 Dec -- fixed, no shuffling",
+        "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (used for conformal interval "
+        "calibration only, never seen by the fitted model), test 01 Nov-31 Dec -- fixed, no shuffling",
         "features": x_cols,
+        "conformal_calibration": {
+            "method": "split-conformal / CQR, delta measured on validate, applied to test",
+            "delta_kw": round(delta_kw, 3),
+            "raw_metrics_before_calibration": {k: round(v, 3) for k, v in raw_metrics.items()},
+        },
         "metrics": {k: round(v, 3) for k, v in metrics.items()},
     }, frame, test_mask, prediction
 
@@ -373,15 +390,26 @@ def module_horizon_forecast(residential: pd.DataFrame, weather: pd.DataFrame) ->
     for horizon_intervals, label in HORIZONS:
         future_target = target.shift(-horizon_intervals).rename("net_load_kw")
         frame = pd.concat([future_target, features], axis=1).dropna()
-        train_mask, _validate_mask, test_mask = fixed_split(frame.index)
+        train_mask, validate_mask, test_mask = fixed_split(frame.index)
         model = QuantileForecast().fit(frame.loc[train_mask, x_cols], frame.loc[train_mask, "net_load_kw"])
-        prediction = model.predict(frame.loc[test_mask, x_cols])
+
+        # Per-horizon conformal calibration: uncertainty genuinely grows with horizon
+        # (lag features go stale further out), so the interval-widening delta is
+        # measured separately at each horizon on its own validate slice, then applied
+        # to that horizon's test slice only. This is what closes the real 24h
+        # under-coverage gap honestly, instead of just widening every horizon equally.
+        validate_prediction = model.predict(frame.loc[validate_mask, x_cols])
+        delta_kw = conformal_interval_delta(frame.loc[validate_mask, "net_load_kw"], validate_prediction)
+
+        raw_prediction = model.predict(frame.loc[test_mask, x_cols])
+        prediction = apply_interval_delta(raw_prediction, delta_kw)
         metrics = forecast_metrics(frame.loc[test_mask, "net_load_kw"], prediction)
         results.append(
             {
                 "horizon_label": label,
                 "horizon_intervals": horizon_intervals,
                 "test_intervals": int(test_mask.sum()),
+                "conformal_delta_kw": round(delta_kw, 3),
                 **{k: round(v, 3) for k, v in metrics.items()},
             }
         )

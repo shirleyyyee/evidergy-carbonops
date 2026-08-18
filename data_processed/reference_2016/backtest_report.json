@@ -58,8 +58,9 @@
     "load_forecast": {
       "site": "residential4 net load (grid_import - grid_export + pv), 2016",
       "train_intervals": 23231,
+      "validate_intervals": 5856,
       "test_intervals": 5856,
-      "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (reserved, unused in this report), test 01 Nov-31 Dec -- fixed, no shuffling",
+      "split": "train 01 Jan-31 Aug, validate 01 Sep-31 Oct (used for conformal interval calibration only, never seen by the fitted model), test 01 Nov-31 Dec -- fixed, no shuffling",
       "features": [
         "hour",
         "dayofweek",
@@ -75,10 +76,20 @@
         "temperature_c",
         "shortwave_wm2"
       ],
+      "conformal_calibration": {
+        "method": "split-conformal / CQR, delta measured on validate, applied to test",
+        "delta_kw": 0.029,
+        "raw_metrics_before_calibration": {
+          "mae_p50_kw": 0.598,
+          "p90_coverage": 0.865,
+          "mean_interval_width_kw": 1.871,
+          "median_bias_kw": -0.177
+        }
+      },
       "metrics": {
         "mae_p50_kw": 0.598,
-        "p90_coverage": 0.865,
-        "mean_interval_width_kw": 1.871,
+        "p90_coverage": 0.878,
+        "mean_interval_width_kw": 1.93,
         "median_bias_kw": -0.177
       }
     },
@@ -87,15 +98,17 @@
         "horizon_label": "1h",
         "horizon_intervals": 4,
         "test_intervals": 5852,
+        "conformal_delta_kw": 0.092,
         "mae_p50_kw": 0.617,
-        "p90_coverage": 0.867,
-        "mean_interval_width_kw": 1.79,
+        "p90_coverage": 0.894,
+        "mean_interval_width_kw": 1.975,
         "median_bias_kw": -0.258
       },
       {
         "horizon_label": "6h",
         "horizon_intervals": 24,
         "test_intervals": 5832,
+        "conformal_delta_kw": 0.0,
         "mae_p50_kw": 0.61,
         "p90_coverage": 0.969,
         "mean_interval_width_kw": 2.744,
@@ -105,6 +118,7 @@
         "horizon_label": "12h",
         "horizon_intervals": 48,
         "test_intervals": 5808,
+        "conformal_delta_kw": 0.0,
         "mae_p50_kw": 0.591,
         "p90_coverage": 0.939,
         "mean_interval_width_kw": 2.41,
@@ -114,9 +128,10 @@
         "horizon_label": "24h",
         "horizon_intervals": 96,
         "test_intervals": 5760,
+        "conformal_delta_kw": 0.099,
         "mae_p50_kw": 0.698,
-        "p90_coverage": 0.778,
-        "mean_interval_width_kw": 1.449,
+        "p90_coverage": 0.818,
+        "mean_interval_width_kw": 1.646,
         "median_bias_kw": -0.409
       }
     ],
