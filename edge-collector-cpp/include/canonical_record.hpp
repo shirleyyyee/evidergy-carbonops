@@ -7,7 +7,7 @@
 #include <optional>
 #include <string>
 
-namespace periscope {
+namespace evidergy {
 
 struct CanonicalRecord {
   std::string timestamp;  // ISO-8601, as decoded from the frame's site clock
@@ -22,4 +22,4 @@ struct CanonicalRecord {
   std::string quality_flags;  // pipe-separated, matches normalize_energy.py convention
 };
 
-}  // namespace periscope
+}  // namespace evidergy

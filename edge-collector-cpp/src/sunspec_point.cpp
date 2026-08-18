@@ -3,7 +3,7 @@
 #include <cmath>
 #include <stdexcept>
 
-namespace periscope::sunspec {
+namespace evidergy::sunspec {
 
 namespace {
 
@@ -58,7 +58,7 @@ double decode_engineering_value(const std::vector<uint16_t>& registers,
   return scaled * point.unit_scale;
 }
 
-std::vector<PointDef> periscope_point_map() {
+std::vector<PointDef> evidergy_point_map() {
   // Offsets chosen for this collector's own 11-register block. Grid/PV/BESS
   // power carry a shared power scale factor (register 0) and decode to Watts
   // per SunSpec convention; unit_scale=0.001 converts directly to the
@@ -78,4 +78,4 @@ std::vector<PointDef> periscope_point_map() {
   };
 }
 
-}  // namespace periscope::sunspec
+}  // namespace evidergy::sunspec

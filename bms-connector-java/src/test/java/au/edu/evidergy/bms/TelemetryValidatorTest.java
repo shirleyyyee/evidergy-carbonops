@@ -1,17 +1,17 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static au.edu.periscope.bms.TestSupport.check;
+import static au.edu.evidergy.bms.TestSupport.check;
 
 public final class TelemetryValidatorTest {
 
   private static Map<String, Object> validPayload() {
     Map<String, Object> payload = new LinkedHashMap<>();
     payload.put("timestamp", "2026-08-09T06:00:00Z");
-    payload.put("site_id", "periscope-bms-demo");
+    payload.put("site_id", "evidergy-bms-demo");
     payload.put("grid_kw", 2.5);
     payload.put("load_kw", 8.6);
     payload.put("pv_kw", 6.1);

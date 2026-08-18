@@ -21,8 +21,8 @@ export default async function LocalLoginPage({
             <p className="eyebrow lightEyebrow">LOCAL SIGN-IN DISABLED</p>
             <h1>Local login is off.</h1>
             <p>
-              Set <code>PERISCOPE_LOCAL_LOGIN=1</code> (and <code>PERISCOPE_LOCAL_LOGIN_SECRET</code>,{" "}
-              <code>PERISCOPE_LOCAL_LOGIN_PASSWORD</code> for anything beyond a throwaway local demo) before
+              Set <code>EVIDERGY_LOCAL_LOGIN=1</code> (and <code>EVIDERGY_LOCAL_LOGIN_SECRET</code>,{" "}
+              <code>EVIDERGY_LOCAL_LOGIN_PASSWORD</code> for anything beyond a throwaway local demo) before
               starting the dev server to enable a local sign-in form. In production, identity is provided by the
               platform-owned Sign in with ChatGPT flow.
             </p>
@@ -94,7 +94,7 @@ export default async function LocalLoginPage({
             </span>
             <span>
               <b>PASSWORD</b>
-              Set via PERISCOPE_LOCAL_LOGIN_PASSWORD (defaults to periscope-demo)
+              Set via EVIDERGY_LOCAL_LOGIN_PASSWORD (defaults to evidergy-demo)
             </span>
           </div>
         </div>

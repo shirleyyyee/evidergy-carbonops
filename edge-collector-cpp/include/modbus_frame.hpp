@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace periscope::modbus {
+namespace evidergy::modbus {
 
 // --- CRC-16/MODBUS (used by Modbus RTU on serial links) ---------------------
 // Polynomial 0xA001 (reflected form of 0x8005), initial value 0xFFFF, no
@@ -60,4 +60,4 @@ DecodedFrame decode_tcp_frame(const uint8_t* data, size_t available);
 std::vector<uint16_t> registers_from_response_payload(
     const std::vector<uint8_t>& payload);
 
-}  // namespace periscope::modbus
+}  // namespace evidergy::modbus

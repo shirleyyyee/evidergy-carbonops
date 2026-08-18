@@ -1,4 +1,4 @@
-// periscope-edge-collector: decodes a stream of Modbus TCP "Read Holding
+// evidergy-edge-collector: decodes a stream of Modbus TCP "Read Holding
 // Registers" response frames (captured on the wire, or replayed from a
 // fixture file) into the canonical CSV schema shared with
 // data_pipeline/normalize_energy.py.
@@ -8,7 +8,7 @@
 // this build (no site hardware is available to this project yet), but the
 // decode path is identical to what a live collector would run against
 // captured responses -- see tools/encode_fixture.cpp, which builds its test
-// fixture from real, previously-validated Periscope reference-dataset CSVs
+// fixture from real, previously-validated Evidergy reference-dataset CSVs
 // (not fabricated numbers), and tests/test_end_to_end_real_fixture.cpp,
 // which proves the round trip is lossless.
 #include <algorithm>
@@ -26,13 +26,13 @@
 
 namespace {
 
-using periscope::CanonicalRecord;
-using periscope::modbus::decode_tcp_frame;
-using periscope::modbus::registers_from_response_payload;
-using periscope::sunspec::PointDef;
-using periscope::sunspec::PointType;
-using periscope::sunspec::decode_engineering_value;
-using periscope::sunspec::periscope_point_map;
+using evidergy::CanonicalRecord;
+using evidergy::modbus::decode_tcp_frame;
+using evidergy::modbus::registers_from_response_payload;
+using evidergy::sunspec::PointDef;
+using evidergy::sunspec::PointType;
+using evidergy::sunspec::decode_engineering_value;
+using evidergy::sunspec::evidergy_point_map;
 
 std::vector<uint8_t> read_file_bytes(const std::string& path) {
   std::ifstream input(path, std::ios::binary);
@@ -63,7 +63,7 @@ double find_value(const std::vector<std::pair<std::string, double>>& decoded,
 
 CanonicalRecord decode_record(const std::vector<uint16_t>& registers,
                                const std::string& site_id) {
-  const auto point_map = periscope_point_map();
+  const auto point_map = evidergy_point_map();
   std::vector<std::pair<std::string, double>> decoded;
   decoded.reserve(point_map.size());
   for (const PointDef& point : point_map) {
@@ -104,7 +104,7 @@ void write_csv_row(std::ostream& out, const CanonicalRecord& r) {
 
 int main(int argc, char** argv) {
   if (argc < 4) {
-    std::cerr << "usage: periscope-edge-collector <input.bin> <output.csv> <site_id>\n";
+    std::cerr << "usage: evidergy-edge-collector <input.bin> <output.csv> <site_id>\n";
     return 2;
   }
   const std::string input_path = argv[1];
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
   }
 
   const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
-  const double registers_decoded = static_cast<double>(frames_ok) * periscope_point_map().size();
+  const double registers_decoded = static_cast<double>(frames_ok) * evidergy_point_map().size();
   std::cerr << "decoded " << frames_ok << " frames (" << frames_failed << " failed) in "
             << std::fixed << std::setprecision(3) << elapsed << "s -- "
             << std::setprecision(0) << (elapsed > 0 ? frames_ok / elapsed : 0.0) << " frames/s, "

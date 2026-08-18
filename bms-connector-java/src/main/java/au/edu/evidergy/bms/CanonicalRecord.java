@@ -1,4 +1,4 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 /**
  * Mirrors the canonical field set in data_pipeline/normalize_energy.py's

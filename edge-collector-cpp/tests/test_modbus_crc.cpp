@@ -11,9 +11,9 @@
 
 #include "modbus_frame.hpp"
 
-using periscope::modbus::append_rtu_crc;
-using periscope::modbus::crc16_modbus;
-using periscope::modbus::verify_rtu_crc;
+using evidergy::modbus::append_rtu_crc;
+using evidergy::modbus::crc16_modbus;
+using evidergy::modbus::verify_rtu_crc;
 
 namespace {
 int failures = 0;

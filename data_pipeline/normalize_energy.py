@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalize a source CSV into the Periscope canonical 5-minute schema."""
+"""Normalize a source CSV into the Evidergy canonical 5-minute schema."""
 from __future__ import annotations
 
 import argparse

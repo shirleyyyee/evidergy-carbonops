@@ -1,4 +1,4 @@
-# periscope-edge-collector (C++)
+# evidergy-edge-collector (C++)
 
 A real Modbus TCP framing + SunSpec-style register decoding layer for the
 "Data Hub" connector described in
@@ -20,7 +20,7 @@ portability to constrained embedded Linux hardware.
   table — real Modbus/SunSpec commissioning always involves configuring a
   device-specific register map from the vendor's documentation, because base
   addresses vary by device even when the point encoding is SunSpec-conformant.
-  `periscope_point_map()` is this collector's own documented, locally
+  `evidergy_point_map()` is this collector's own documented, locally
   configured map.
 - **No live hardware**: this build reads a byte stream (a file today; a TCP
   socket in a real deployment) rather than opening a live Modbus connection,
@@ -53,7 +53,7 @@ a hard failure) if `../data_processed/reference_2016/*.csv` doesn't exist yet
 ## Run the collector
 
 ```powershell
-build\periscope-edge-collector.exe build\real_site_modbus_stream.bin output.csv periscope-edge-demo
+build\evidergy-edge-collector.exe build\real_site_modbus_stream.bin output.csv evidergy-edge-demo
 ```
 
 Prints throughput stats (frames/s, registers/s) to stderr and writes the

@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 
-USER_AGENT = "PeriscopeEnergyCarbonOps-MVP/0.1 (+data-governance-contact-required)"
+USER_AGENT = "EvidergyCarbonOps-MVP/0.1 (+data-governance-contact-required)"
 
 
 class LinkParser(HTMLParser):

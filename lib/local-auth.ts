@@ -10,12 +10,12 @@ import type { ChatGPTUser } from "@/app/chatgpt-auth";
  * exists so the product can be logged into and reviewed locally.
  *
  * Disabled by default. Must be explicitly enabled with
- * PERISCOPE_LOCAL_LOGIN=1, and refuses to run at all when NODE_ENV=production
- * unless PERISCOPE_ALLOW_LOCAL_LOGIN_IN_PRODUCTION=1 is also set -- so it can
+ * EVIDERGY_LOCAL_LOGIN=1, and refuses to run at all when NODE_ENV=production
+ * unless EVIDERGY_ALLOW_LOCAL_LOGIN_IN_PRODUCTION=1 is also set -- so it can
  * never silently become a backdoor on the real hosted deployment.
  */
 
-const COOKIE_NAME = "periscope_local_session";
+const COOKIE_NAME = "evidergy_local_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 12; // 12 hours
 
 export type LocalAccount = {
@@ -26,28 +26,28 @@ export type LocalAccount = {
 };
 
 function defaultAccounts(): LocalAccount[] {
-  const password = process.env.PERISCOPE_LOCAL_LOGIN_PASSWORD || "periscope-demo";
+  const password = process.env.EVIDERGY_LOCAL_LOGIN_PASSWORD || "evidergy-demo";
   return [
-    { username: "operator", password, displayName: "Site Operator (local demo)", email: "operator@periscope.local" },
-    { username: "reviewer", password, displayName: "Grant Reviewer (local demo)", email: "reviewer@periscope.local" },
+    { username: "operator", password, displayName: "Site Operator (local demo)", email: "operator@evidergy.local" },
+    { username: "reviewer", password, displayName: "Grant Reviewer (local demo)", email: "reviewer@evidergy.local" },
   ];
 }
 
 export function localLoginEnabled(): boolean {
-  if (process.env.PERISCOPE_LOCAL_LOGIN !== "1") return false;
-  if (process.env.NODE_ENV === "production" && process.env.PERISCOPE_ALLOW_LOCAL_LOGIN_IN_PRODUCTION !== "1") {
+  if (process.env.EVIDERGY_LOCAL_LOGIN !== "1") return false;
+  if (process.env.NODE_ENV === "production" && process.env.EVIDERGY_ALLOW_LOCAL_LOGIN_IN_PRODUCTION !== "1") {
     return false;
   }
   return true;
 }
 
 function secret(): string {
-  const configured = process.env.PERISCOPE_LOCAL_LOGIN_SECRET;
+  const configured = process.env.EVIDERGY_LOCAL_LOGIN_SECRET;
   if (configured) return configured;
   if (process.env.NODE_ENV === "production") {
-    throw new Error("PERISCOPE_LOCAL_LOGIN_SECRET must be set to use local login outside development.");
+    throw new Error("EVIDERGY_LOCAL_LOGIN_SECRET must be set to use local login outside development.");
   }
-  return "periscope-local-dev-secret-not-for-production";
+  return "evidergy-local-dev-secret-not-for-production";
 }
 
 function sign(payload: string): string {

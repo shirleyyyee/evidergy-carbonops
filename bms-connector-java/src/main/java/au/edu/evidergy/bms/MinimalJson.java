@@ -1,4 +1,4 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-// Builds a real-data test fixture: reads the already-validated Periscope
+// Builds a real-data test fixture: reads the already-validated Evidergy
 // reference-dataset CSVs (data_processed/reference_2016/*.csv, produced by
 // data_pipeline/reference_backtest.py from real Open Power System Data +
 // Open-Meteo telemetry) and re-encodes each fully-covered real 15-minute
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
         static_cast<uint16_t>((ts >> 16) & 0xFFFF), static_cast<uint16_t>(ts & 0xFFFF),
     };
 
-    auto frame = periscope::modbus::encode_read_holding_registers_response(
+    auto frame = evidergy::modbus::encode_read_holding_registers_response(
         transaction_id++, /*unit_id=*/1, registers);
     out.write(reinterpret_cast<const char*>(frame.data()), static_cast<std::streamsize>(frame.size()));
     ++encoded;

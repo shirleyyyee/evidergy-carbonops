@@ -10,7 +10,7 @@
 // device-specific register map from the vendor's documentation, because base
 // addresses and model instance offsets vary by device even when the point
 // *encoding* is SunSpec-conformant. The point map below (see
-// periscope_point_map()) is our own documented, locally-configured map for
+// evidergy_point_map()) is our own documented, locally-configured map for
 // this collector, not a copy of an official model layout.
 #pragma once
 
@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-namespace periscope::sunspec {
+namespace evidergy::sunspec {
 
 enum class PointType { kUint16, kInt16, kUint32, kInt32, kAcc32, kScaleFactor };
 
@@ -42,6 +42,6 @@ double decode_engineering_value(const std::vector<uint16_t>& registers,
 // This collector's own documented, locally-configured register map (see the
 // honesty note above). Offsets are 0-based into a single contiguous
 // holding-register read.
-std::vector<PointDef> periscope_point_map();
+std::vector<PointDef> evidergy_point_map();
 
-}  // namespace periscope::sunspec
+}  // namespace evidergy::sunspec

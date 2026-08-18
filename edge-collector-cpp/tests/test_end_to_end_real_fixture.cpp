@@ -1,5 +1,5 @@
 // The integrity test that matters most for this module: decode the real-data
-// fixture (built by tools/encode_fixture from the checksummed Periscope
+// fixture (built by tools/encode_fixture from the checksummed Evidergy
 // reference dataset) and confirm every decoded value matches the original
 // real CSV row it was encoded from, within floating-point rounding
 // tolerance. This is what proves the Modbus/SunSpec encode-decode round trip
@@ -15,11 +15,11 @@
 #include "modbus_frame.hpp"
 #include "sunspec_point.hpp"
 
-using periscope::modbus::decode_tcp_frame;
-using periscope::modbus::registers_from_response_payload;
-using periscope::sunspec::PointType;
-using periscope::sunspec::decode_engineering_value;
-using periscope::sunspec::periscope_point_map;
+using evidergy::modbus::decode_tcp_frame;
+using evidergy::modbus::registers_from_response_payload;
+using evidergy::sunspec::PointType;
+using evidergy::sunspec::decode_engineering_value;
+using evidergy::sunspec::evidergy_point_map;
 
 namespace {
 
@@ -125,10 +125,10 @@ int main(int argc, char** argv) {
   const double tol_temp = 0.05 + 1e-9;    // encoded at 0.1 C resolution
 
   size_t compared = std::min(reference_rows.size(), decoded_register_blocks.size());
-  // periscope_point_map() heap-allocates a fresh vector on every call; computed once
+  // evidergy_point_map() heap-allocates a fresh vector on every call; computed once
   // here rather than once per row (x4000) to avoid needless allocation churn in the
   // comparison loop.
-  const auto point_map = periscope_point_map();
+  const auto point_map = evidergy_point_map();
   for (size_t i = 0; i < compared; ++i) {
     const auto& regs = decoded_register_blocks[i];
     const auto& ref = reference_rows[i];

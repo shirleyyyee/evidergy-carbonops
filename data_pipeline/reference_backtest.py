@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reference backtest: real public data -> Periscope core algorithms -> versioned metrics.
+"""Reference backtest: real public data -> Evidergy core algorithms -> versioned metrics.
 
 Purpose
 -------

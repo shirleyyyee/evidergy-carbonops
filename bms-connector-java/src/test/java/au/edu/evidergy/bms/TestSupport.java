@@ -1,4 +1,4 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 /** Tiny assertion helper -- deliberately dependency-free, no JUnit/Maven (see README.md). */
 final class TestSupport {

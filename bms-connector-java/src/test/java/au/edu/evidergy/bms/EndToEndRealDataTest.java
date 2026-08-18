@@ -1,4 +1,4 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,11 +15,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static au.edu.periscope.bms.TestSupport.check;
+import static au.edu.evidergy.bms.TestSupport.check;
 
 /**
  * Starts the real BmsIngestServer, replays real intervals from the
- * checksummed Periscope reference dataset (residential4, 2016 -- see
+ * checksummed Evidergy reference dataset (residential4, 2016 -- see
  * docs/REFERENCE_DATASET.md) as HTTP POST /ingest requests exactly as a real
  * BMS gateway would send them, then reads back the server's own output CSV
  * and confirms every value survived the HTTP + validation + CSV round trip
@@ -129,7 +129,7 @@ public final class EndToEndRealDataTest {
   private static String buildPayload(String timestamp, double[] row) {
     Map<String, Object> payload = new LinkedHashMap<>();
     payload.put("timestamp", timestamp);
-    payload.put("site_id", "periscope-residential4-real-replay");
+    payload.put("site_id", "evidergy-residential4-real-replay");
     payload.put("grid_kw", row[1]);
     payload.put("load_kw", row[1] + row[2]);  // whole-building identity load, matches Python module's definition
     payload.put("pv_kw", row[2]);

@@ -9,11 +9,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const base = new URL(`${protocol}://${host}`);
   return {
     metadataBase: base,
-    title: { default: "Periscope Energy CarbonOps", template: "%s · Periscope" },
+    title: { default: "Evidergy CarbonOps", template: "%s · Evidergy" },
     description: "Read-only microgrid intelligence for energy flow, probabilistic forecasting, PV/BESS evidence and versioned Scope 2 accounting.",
-    icons: { icon: "/periscope-logo.png", shortcut: "/periscope-logo.png" },
-    openGraph: { title: "Periscope Energy CarbonOps", description: "See energy risk before it becomes operational loss.", type: "website", images: [{ url: "/og.png", width: 1536, height: 804, alt: "Periscope Energy CarbonOps evidence-first microgrid intelligence" }] },
-    twitter: { card: "summary_large_image", title: "Periscope Energy CarbonOps", description: "Evidence-first microgrid intelligence.", images: ["/og.png"] },
+    icons: { icon: "/evidergy-logo.png", shortcut: "/evidergy-logo.png" },
+    openGraph: { title: "Evidergy CarbonOps", description: "See energy risk before it becomes operational loss.", type: "website", images: [{ url: "/og.png", width: 1536, height: 804, alt: "Evidergy CarbonOps evidence-first microgrid intelligence" }] },
+    twitter: { card: "summary_large_image", title: "Evidergy CarbonOps", description: "Evidence-first microgrid intelligence.", images: ["/og.png"] },
   };
 }
 

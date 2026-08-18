@@ -9,7 +9,7 @@
 #include "modbus_frame.hpp"
 #include "sunspec_point.hpp"
 
-using namespace periscope::sunspec;
+using namespace evidergy::sunspec;
 
 namespace {
 int failures = 0;
@@ -64,7 +64,7 @@ int main() {
     check(approx_equal(decode_engineering_value(regs, p), 100000.0), "uint32/acc32 combine decodes 0x000186A0 -> 100000");
   }
 
-  // Full periscope_point_map() round trip through actual register encoding
+  // Full evidergy_point_map() round trip through actual register encoding
   // (exercises the exact offsets/types the collector uses in production).
   {
     std::vector<uint16_t> regs;
@@ -82,7 +82,7 @@ int main() {
     regs[9] = static_cast<uint16_t>((1700000000u >> 16) & 0xFFFF);
     regs[10] = static_cast<uint16_t>(1700000000u & 0xFFFF);
 
-    for (const auto& point : periscope_point_map()) {
+    for (const auto& point : evidergy_point_map()) {
       if (point.type == PointType::kScaleFactor) continue;
       double v = decode_engineering_value(regs, point);
       if (point.name == "grid_kw") check(approx_equal(v, 2.5), "point map grid_kw -> 2.5");

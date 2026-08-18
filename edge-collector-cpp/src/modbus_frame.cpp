@@ -1,6 +1,6 @@
 #include "modbus_frame.hpp"
 
-namespace periscope::modbus {
+namespace evidergy::modbus {
 
 uint16_t crc16_modbus(const uint8_t* data, size_t length) {
   uint16_t crc = 0xFFFF;
@@ -105,4 +105,4 @@ std::vector<uint16_t> registers_from_response_payload(
   return registers;
 }
 
-}  // namespace periscope::modbus
+}  // namespace evidergy::modbus

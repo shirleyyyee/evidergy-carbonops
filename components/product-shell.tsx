@@ -20,9 +20,9 @@ export function ProductShell({ user, children }: { user: ProductUser; children: 
   return (
     <div className="productShell">
       <aside className="sidebar">
-        <Link href="/dashboard" className="brand" aria-label="Periscope home">
+        <Link href="/dashboard" className="brand" aria-label="Evidergy home">
           <span className="brandMark"><i /><i /><i /></span>
-          <span><strong>PERISCOPE</strong><small>ENERGY CARBONOPS</small></span>
+          <span><strong>EVIDERGY</strong><small>CARBONOPS</small></span>
         </Link>
         <div className="sitePicker">
           <span>Active site</span>
@@ -39,7 +39,7 @@ export function ProductShell({ user, children }: { user: ProductUser; children: 
       </aside>
       <div className="mainColumn">
         <header className="topbar">
-          <div className="mobileBrand"><span className="brandMark"><i /><i /><i /></span><strong>PERISCOPE</strong></div>
+          <div className="mobileBrand"><span className="brandMark"><i /><i /><i /></span><strong>EVIDERGY</strong></div>
           <div className="connectionStatus"><span>●</span>{site.status}<small>Updated {site.lastUpdated}</small></div>
           <div className="topbarActions">
             <Link href="/settings">Settings</Link>

@@ -1,6 +1,6 @@
-# Periscope Energy CarbonOps MVP
+# Evidergy CarbonOps MVP
 
-Repository: https://github.com/shirleyyyee/periscope-energy-carbonops · Live technical validation record (GitHub Pages, no login required): https://shirleyyyee.github.io/periscope-energy-carbonops/
+Repository: https://github.com/shirleyyyee/evidergy-carbonops · Live technical validation record (GitHub Pages, no login required): https://shirleyyyee.github.io/evidergy-carbonops/
 
 Evidence-first, read-only microgrid intelligence for Australian commercial precincts. The MVP implements sign-in-gated product routes, nine operator workspaces, protected JSON/CSV APIs, a D1 audit trail, public-data acquisition helpers and reference analytics for energy balance, probabilistic forecasting, PV/BESS evidence and Scope 2 — **backtested end-to-end on a real, checksummed public dataset** (see `docs/REFERENCE_DATASET.md`), not synthetic demo data.
 
@@ -50,9 +50,9 @@ whole product on a developer machine, enable the local credential login instead:
    real Worker `vars`/secrets (deployed) are.
 
    ```
-   PERISCOPE_LOCAL_LOGIN=1
-   PERISCOPE_LOCAL_LOGIN_SECRET=<any random string>
-   PERISCOPE_LOCAL_LOGIN_PASSWORD=<pick a password>
+   EVIDERGY_LOCAL_LOGIN=1
+   EVIDERGY_LOCAL_LOGIN_SECRET=<any random string>
+   EVIDERGY_LOCAL_LOGIN_PASSWORD=<pick a password>
    ```
 
 2. `pnpm run dev`, then open `http://localhost:3000/login` and sign in as `operator`

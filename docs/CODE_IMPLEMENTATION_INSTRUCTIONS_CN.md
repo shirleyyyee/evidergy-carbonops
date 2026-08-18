@@ -1,4 +1,4 @@
-# Periscope Energy CarbonOps MVP：完整代码实施说明
+# Evidergy CarbonOps MVP：完整代码实施说明
 
 版本：0.1.0  
 依据：2026-08-08 商业计划书与可行性分析  

@@ -5,7 +5,7 @@ import { getLocalSessionUser, localLoginEnabled } from "@/lib/local-auth";
 const demoUser: ChatGPTUser = {
   userId: "local-demo-user",
   displayName: "Maya Chen",
-  email: "maya@periscope.demo",
+  email: "maya@evidergy.demo",
   fullName: "Maya Chen",
 };
 

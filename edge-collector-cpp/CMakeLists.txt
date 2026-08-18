@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(periscope_edge_collector CXX)
+project(evidergy_edge_collector CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,22 +25,22 @@ add_link_options(-static)
 
 include_directories(include)
 
-add_library(periscope_modbus STATIC src/modbus_frame.cpp src/sunspec_point.cpp)
+add_library(evidergy_modbus STATIC src/modbus_frame.cpp src/sunspec_point.cpp)
 
-add_executable(periscope-edge-collector src/collector_main.cpp)
-target_link_libraries(periscope-edge-collector PRIVATE periscope_modbus)
+add_executable(evidergy-edge-collector src/collector_main.cpp)
+target_link_libraries(evidergy-edge-collector PRIVATE evidergy_modbus)
 
 add_executable(encode_fixture tools/encode_fixture.cpp)
-target_link_libraries(encode_fixture PRIVATE periscope_modbus)
+target_link_libraries(encode_fixture PRIVATE evidergy_modbus)
 
 enable_testing()
 
 add_executable(test_modbus_crc tests/test_modbus_crc.cpp)
-target_link_libraries(test_modbus_crc PRIVATE periscope_modbus)
+target_link_libraries(test_modbus_crc PRIVATE evidergy_modbus)
 add_test(NAME modbus_crc COMMAND test_modbus_crc)
 
 add_executable(test_sunspec_decode tests/test_sunspec_decode.cpp)
-target_link_libraries(test_sunspec_decode PRIVATE periscope_modbus)
+target_link_libraries(test_sunspec_decode PRIVATE evidergy_modbus)
 add_test(NAME sunspec_decode COMMAND test_sunspec_decode)
 
 # The end-to-end real-data test needs data_processed/reference_2016/*.csv,
@@ -64,7 +64,7 @@ if(EXISTS "${INDUSTRIAL_CSV}" AND EXISTS "${WEATHER_CSV}")
   add_custom_target(build_real_fixture DEPENDS "${FIXTURE_BIN}")
 
   add_executable(test_end_to_end_real_fixture tests/test_end_to_end_real_fixture.cpp)
-  target_link_libraries(test_end_to_end_real_fixture PRIVATE periscope_modbus)
+  target_link_libraries(test_end_to_end_real_fixture PRIVATE evidergy_modbus)
   add_dependencies(test_end_to_end_real_fixture build_real_fixture)
   add_test(NAME end_to_end_real_fixture
            COMMAND test_end_to_end_real_fixture "${FIXTURE_BIN}" "${INDUSTRIAL_CSV}" "${WEATHER_CSV}")

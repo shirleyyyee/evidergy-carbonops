@@ -1,17 +1,17 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static au.edu.periscope.bms.TestSupport.check;
+import static au.edu.evidergy.bms.TestSupport.check;
 
 public final class MinimalJsonTest {
 
   public static void main(String[] args) {
     // Flat object, mixed types.
     Map<String, Object> parsed = MinimalJson.parseObject(
-        "{\"site_id\": \"periscope-bms-demo\", \"grid_kw\": 2.5, \"count\": 12, \"ok\": true, \"note\": null}");
-    check("periscope-bms-demo".equals(parsed.get("site_id")), "string field parses");
+        "{\"site_id\": \"evidergy-bms-demo\", \"grid_kw\": 2.5, \"count\": 12, \"ok\": true, \"note\": null}");
+    check("evidergy-bms-demo".equals(parsed.get("site_id")), "string field parses");
     check(((Number) parsed.get("grid_kw")).doubleValue() == 2.5, "double field parses");
     check(((Number) parsed.get("count")).longValue() == 12L, "integer field parses as Long");
     check(Boolean.TRUE.equals(parsed.get("ok")), "boolean literal parses");

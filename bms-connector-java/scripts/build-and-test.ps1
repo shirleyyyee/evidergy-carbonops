@@ -23,15 +23,15 @@ if ($LASTEXITCODE -ne 0) { throw "test compilation failed" }
 Write-Host "Building runnable jar..."
 $jarPath = Join-Path $root "build/bms-connector.jar"
 Push-Location $outMain
-jar --create --file $jarPath --main-class au.edu.periscope.bms.Main .
+jar --create --file $jarPath --main-class au.edu.evidergy.bms.Main .
 Pop-Location
 if ($LASTEXITCODE -ne 0) { throw "jar packaging failed" }
 Write-Host "Wrote $jarPath"
 
 $testClasses = @(
-  "au.edu.periscope.bms.MinimalJsonTest",
-  "au.edu.periscope.bms.TelemetryValidatorTest",
-  "au.edu.periscope.bms.EndToEndRealDataTest"
+  "au.edu.evidergy.bms.MinimalJsonTest",
+  "au.edu.evidergy.bms.TelemetryValidatorTest",
+  "au.edu.evidergy.bms.EndToEndRealDataTest"
 )
 
 $failed = $false

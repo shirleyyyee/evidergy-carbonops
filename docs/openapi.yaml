@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Periscope Energy CarbonOps API
+  title: Evidergy CarbonOps API
   version: 0.1.0
   description: Read-only operational analytics API. Model outputs are evidence, not deterministic root cause or control instructions.
 servers:

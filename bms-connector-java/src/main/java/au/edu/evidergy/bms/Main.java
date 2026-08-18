@@ -1,4 +1,4 @@
-package au.edu.periscope.bms;
+package au.edu.evidergy.bms;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,7 +14,7 @@ public final class Main {
 
     BmsIngestServer server = new BmsIngestServer(outputCsv, new TelemetryValidator());
     server.start(port);
-    System.out.println("periscope bms-connector listening on http://localhost:" + port
+    System.out.println("evidergy bms-connector listening on http://localhost:" + port
         + "  (POST /ingest, GET /health)");
     System.out.println("writing validated canonical records to " + outputCsv.toAbsolutePath());
     Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
