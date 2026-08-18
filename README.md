@@ -18,6 +18,7 @@ summary of all of it.
 - `/data-quality` — completeness, duplicates, frozen sensors, signs and balance
 - `/pv-health` — weather-adjusted baseline, peer comparison and estimated loss
 - `/bess-health` — SOC–power consistency, throughput, efficiency and peak shaving
+- `/edge-devices` — real Modbus-decoded run-state recognition from the C++ edge collector, cross-checked against an independent Python implementation
 - `/forecast` — P05 / P50 / P95 forecast and rolling-backtest metrics
 - `/carbon-ledger` — versioned factor, Scope 2 ledger and CSV export
 - `/alerts` — evidence and human-confirmed audit actions
@@ -112,6 +113,14 @@ Validated end-to-end against the same real, checksummed 2016 reference dataset u
 throughout the rest of the project (`tools/encode_fixture` builds a real Modbus
 fixture from it; `tests/test_end_to_end_real_fixture.cpp` decodes it back and checks
 against the source CSV within quantization tolerance).
+
+The decoded stream also feeds a real equipment run-state classifier
+(`include/run_state.hpp`) — a generic, self-designed OFF/IDLE/RUN/UNKNOWN
+threshold+debounce prototype (explicitly **not** Evidergy's confidential internal
+EAF-GW4 production algorithm). The same algorithm is independently implemented in
+Python (`data_pipeline/reference_backtest.py::classify_run_state`) and both produce
+an identical state distribution on the real reference telemetry — surfaced live on
+the product's `/edge-devices` page.
 
 ```powershell
 cmake -S edge-collector-cpp -B edge-collector-cpp/build -G Ninja

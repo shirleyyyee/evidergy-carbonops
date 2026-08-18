@@ -2328,6 +2328,510 @@ export const bessEfficiency = {
   "round_trip_efficiency_pct": 58.7,
   "note": "Whole-year real energy totals; not adjusted for standby/idle losses outside active cycling."
 };
+
+/** Real equipment run-state classification (OFF/IDLE/RUN/UNKNOWN) over the full real 2016 industrial2 bess_kw series -- the same generic threshold+debounce algorithm implemented independently in edge-collector-cpp/include/run_state.hpp, cross-checked to match exactly. See that header's honesty note: an independently designed public prototype, not Evidergy's confidential internal EAF-GW4 production algorithm. */
+export const edgeStateRecognition = {
+  "site": "industrial2 (real behind-the-meter battery, 2016 full year)",
+  "method": "Generic threshold+debounce state machine (OFF/IDLE/RUN/UNKNOWN), the identical algorithm implemented independently in edge-collector-cpp/include/run_state.hpp for the C++ edge collector -- a public prototype, not Evidergy's confidential internal EAF-GW4 production algorithm.",
+  "thresholds": {
+    "off_threshold_kw": 0.05,
+    "run_threshold_kw": 0.3,
+    "debounce_intervals": 3
+  },
+  "total_intervals": 35136,
+  "state_distribution_pct": {
+    "OFF": 49.8,
+    "UNKNOWN": 31.6,
+    "RUN": 16.6,
+    "IDLE": 2.0
+  },
+  "note": "No real labelled RUN/OFF/IDLE ground truth exists in this public dataset, so this reports real state-distribution statistics, not a recall/accuracy claim -- the same honesty constraint documented for the PV/BESS fault-injection evidence modules."
+};
+
+/** Same exemplar day as bessSeries above (site_b_day), sliced from a full-year classification so debounce state carries correctly across midnight. */
+export const edgeStateTimeline = [
+  {
+    "label": "00:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "00:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "00:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "00:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "01:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "01:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "01:30",
+    "state": "OFF",
+    "powerKw": -0.024
+  },
+  {
+    "label": "01:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "02:00",
+    "state": "OFF",
+    "powerKw": 0.024
+  },
+  {
+    "label": "02:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "02:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "02:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "03:00",
+    "state": "OFF",
+    "powerKw": -0.024
+  },
+  {
+    "label": "03:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "03:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "03:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "04:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "04:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "04:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "04:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "05:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "05:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "05:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "05:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "06:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "06:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "06:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "06:45",
+    "state": "OFF",
+    "powerKw": -0.024
+  },
+  {
+    "label": "07:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "07:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "07:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "07:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "08:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "08:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "08:30",
+    "state": "OFF",
+    "powerKw": -0.116
+  },
+  {
+    "label": "08:45",
+    "state": "OFF",
+    "powerKw": -0.984
+  },
+  {
+    "label": "09:00",
+    "state": "OFF",
+    "powerKw": 0.032
+  },
+  {
+    "label": "09:15",
+    "state": "OFF",
+    "powerKw": -1.08
+  },
+  {
+    "label": "09:30",
+    "state": "OFF",
+    "powerKw": -0.508
+  },
+  {
+    "label": "09:45",
+    "state": "RUN",
+    "powerKw": -1.456
+  },
+  {
+    "label": "10:00",
+    "state": "RUN",
+    "powerKw": -1.46
+  },
+  {
+    "label": "10:15",
+    "state": "RUN",
+    "powerKw": -1.452
+  },
+  {
+    "label": "10:30",
+    "state": "RUN",
+    "powerKw": -1.44
+  },
+  {
+    "label": "10:45",
+    "state": "RUN",
+    "powerKw": -1.4
+  },
+  {
+    "label": "11:00",
+    "state": "RUN",
+    "powerKw": -1.328
+  },
+  {
+    "label": "11:15",
+    "state": "RUN",
+    "powerKw": -1.236
+  },
+  {
+    "label": "11:30",
+    "state": "RUN",
+    "powerKw": -1.144
+  },
+  {
+    "label": "11:45",
+    "state": "RUN",
+    "powerKw": -1.004
+  },
+  {
+    "label": "12:00",
+    "state": "RUN",
+    "powerKw": -0.924
+  },
+  {
+    "label": "12:15",
+    "state": "RUN",
+    "powerKw": -0.524
+  },
+  {
+    "label": "12:30",
+    "state": "RUN",
+    "powerKw": -0.488
+  },
+  {
+    "label": "12:45",
+    "state": "RUN",
+    "powerKw": -0.12
+  },
+  {
+    "label": "13:00",
+    "state": "RUN",
+    "powerKw": 0.816
+  },
+  {
+    "label": "13:15",
+    "state": "RUN",
+    "powerKw": 0.788
+  },
+  {
+    "label": "13:30",
+    "state": "RUN",
+    "powerKw": 0.736
+  },
+  {
+    "label": "13:45",
+    "state": "RUN",
+    "powerKw": 0.856
+  },
+  {
+    "label": "14:00",
+    "state": "RUN",
+    "powerKw": -1.388
+  },
+  {
+    "label": "14:15",
+    "state": "RUN",
+    "powerKw": -1.264
+  },
+  {
+    "label": "14:30",
+    "state": "RUN",
+    "powerKw": -1.108
+  },
+  {
+    "label": "14:45",
+    "state": "RUN",
+    "powerKw": -0.896
+  },
+  {
+    "label": "15:00",
+    "state": "RUN",
+    "powerKw": 0.816
+  },
+  {
+    "label": "15:15",
+    "state": "RUN",
+    "powerKw": 1.084
+  },
+  {
+    "label": "15:30",
+    "state": "RUN",
+    "powerKw": 1.076
+  },
+  {
+    "label": "15:45",
+    "state": "RUN",
+    "powerKw": 1.068
+  },
+  {
+    "label": "16:00",
+    "state": "RUN",
+    "powerKw": 1.068
+  },
+  {
+    "label": "16:15",
+    "state": "RUN",
+    "powerKw": 1.064
+  },
+  {
+    "label": "16:30",
+    "state": "RUN",
+    "powerKw": 1.056
+  },
+  {
+    "label": "16:45",
+    "state": "RUN",
+    "powerKw": 1.048
+  },
+  {
+    "label": "17:00",
+    "state": "RUN",
+    "powerKw": 1.04
+  },
+  {
+    "label": "17:15",
+    "state": "RUN",
+    "powerKw": 1.012
+  },
+  {
+    "label": "17:30",
+    "state": "RUN",
+    "powerKw": 0.472
+  },
+  {
+    "label": "17:45",
+    "state": "RUN",
+    "powerKw": -0.02
+  },
+  {
+    "label": "18:00",
+    "state": "RUN",
+    "powerKw": -0.02
+  },
+  {
+    "label": "18:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "18:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "18:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "19:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "19:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "19:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "19:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "20:00",
+    "state": "OFF",
+    "powerKw": -0.024
+  },
+  {
+    "label": "20:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "20:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "20:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "21:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "21:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "21:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "21:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "22:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "22:15",
+    "state": "OFF",
+    "powerKw": -0.024
+  },
+  {
+    "label": "22:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "22:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "23:00",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "23:15",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "23:30",
+    "state": "OFF",
+    "powerKw": -0.02
+  },
+  {
+    "label": "23:45",
+    "state": "OFF",
+    "powerKw": -0.02
+  }
+];
+
 export const energyBalance = {
   "site": "residential4 (real grid/PV/appliance meters, 2016)",
   "identity_check": {

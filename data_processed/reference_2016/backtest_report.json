@@ -160,6 +160,23 @@
       "round_trip_efficiency_pct": 58.7,
       "note": "Whole-year real energy totals; not adjusted for standby/idle losses outside active cycling."
     },
+    "edge_state_recognition": {
+      "site": "industrial2 (real behind-the-meter battery, 2016 full year)",
+      "method": "Generic threshold+debounce state machine (OFF/IDLE/RUN/UNKNOWN), the identical algorithm implemented independently in edge-collector-cpp/include/run_state.hpp for the C++ edge collector -- a public prototype, not Evidergy's confidential internal EAF-GW4 production algorithm.",
+      "thresholds": {
+        "off_threshold_kw": 0.05,
+        "run_threshold_kw": 0.3,
+        "debounce_intervals": 3
+      },
+      "total_intervals": 35136,
+      "state_distribution_pct": {
+        "OFF": 49.8,
+        "UNKNOWN": 31.6,
+        "RUN": 16.6,
+        "IDLE": 2.0
+      },
+      "note": "No real labelled RUN/OFF/IDLE ground truth exists in this public dataset, so this reports real state-distribution statistics, not a recall/accuracy claim -- the same honesty constraint documented for the PV/BESS fault-injection evidence modules."
+    },
     "scope2": {
       "site": "residential4 real monthly grid import, 2016",
       "factor_source": "DCCEEW National Greenhouse Accounts Factors 2025, Table 1, Northern Territory (Darwin-Katherine Interconnected System), location-based",

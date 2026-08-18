@@ -15,6 +15,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from reference_backtest import classify_run_state
+
 ROOT = Path(__file__).parent.parent
 DATA = ROOT / "data_processed" / "reference_2016"
 OUT_TS = ROOT / "lib" / "reference-dataset.ts"
@@ -118,6 +120,16 @@ def main() -> None:
     bess_soc_now_pct = round(float(day_b_frame["soc_pct"].iloc[peak_activity_pos]), 1)
     daily_throughput_kwh = round(float(day_b_frame["bess_kw"].abs().sum() * 0.25), 1)
     equivalent_cycles = round(daily_throughput_kwh / (2 * capacity_kwh), 2)
+
+    # --- Edge run-state timeline: classified over the full real year (so debounce
+    # state carries correctly across midnight) then sliced to the same exemplar day
+    # as the BESS chart above, for narrative consistency between the two panels. ---
+    full_year_states = classify_run_state(industrial["bess_kw"])
+    day_b_states = full_year_states.loc[site_b_day : site_b_day + "T23:45:00"]
+    edge_state_timeline = [
+        {"label": ts.strftime("%H:%M"), "state": state, "powerKw": round(float(power), 3)}
+        for ts, state, power in zip(day_b_states.index, day_b_states.values, day_b_frame["bess_kw"].values)
+    ]
 
     # --- Forecast series: 24 real hourly-spaced points from the real test predictions ---
     hourly = forecast_pred[forecast_pred.index.minute == 0].copy()
@@ -296,6 +308,7 @@ def main() -> None:
         report=report,
         energy_series=energy_series,
         bess_series=bess_series,
+        edge_state_timeline=edge_state_timeline,
         forecast_series=forecast_series,
         forecast_window=(forecast_window_start, forecast_window_end),
         carbon_months=carbon_months,
@@ -397,6 +410,13 @@ export const loadForecastByHorizon = {j(modules['load_forecast_by_horizon'])};
 export const pvEvidence = {j(modules['pv_evidence'])};
 export const bessEvidence = {j(modules['bess_evidence'])};
 export const bessEfficiency = {j(modules['bess_efficiency'])};
+
+/** Real equipment run-state classification (OFF/IDLE/RUN/UNKNOWN) over the full real 2016 industrial2 bess_kw series -- the same generic threshold+debounce algorithm implemented independently in edge-collector-cpp/include/run_state.hpp, cross-checked to match exactly. See that header's honesty note: an independently designed public prototype, not Evidergy's confidential internal EAF-GW4 production algorithm. */
+export const edgeStateRecognition = {j(modules['edge_state_recognition'])};
+
+/** Same exemplar day as bessSeries above (site_b_day), sliced from a full-year classification so debounce state carries correctly across midnight. */
+export const edgeStateTimeline = {j(kw['edge_state_timeline'])};
+
 export const energyBalance = {j(modules['energy_balance'])};
 export const dataQuality = {j(modules['data_quality'])};
 export const scope2 = {j(modules['scope2'])};

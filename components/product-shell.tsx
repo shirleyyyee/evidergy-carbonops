@@ -9,6 +9,7 @@ const nav = [
   { href: "/data-quality", label: "Data quality", icon: "◇" },
   { href: "/pv-health", label: "PV health", icon: "☼" },
   { href: "/bess-health", label: "BESS health", icon: "▣" },
+  { href: "/edge-devices", label: "Edge devices", icon: "⌗" },
   { href: "/forecast", label: "Forecast", icon: "∿" },
   { href: "/carbon-ledger", label: "Carbon ledger", icon: "◉" },
   { href: "/alerts", label: "Alerts & evidence", icon: "!" },

@@ -25,7 +25,7 @@ add_link_options(-static)
 
 include_directories(include)
 
-add_library(evidergy_modbus STATIC src/modbus_frame.cpp src/sunspec_point.cpp)
+add_library(evidergy_modbus STATIC src/modbus_frame.cpp src/sunspec_point.cpp src/run_state.cpp)
 
 add_executable(evidergy-edge-collector src/collector_main.cpp)
 target_link_libraries(evidergy-edge-collector PRIVATE evidergy_modbus)
@@ -42,6 +42,10 @@ add_test(NAME modbus_crc COMMAND test_modbus_crc)
 add_executable(test_sunspec_decode tests/test_sunspec_decode.cpp)
 target_link_libraries(test_sunspec_decode PRIVATE evidergy_modbus)
 add_test(NAME sunspec_decode COMMAND test_sunspec_decode)
+
+add_executable(test_run_state tests/test_run_state.cpp)
+target_link_libraries(test_run_state PRIVATE evidergy_modbus)
+add_test(NAME run_state COMMAND test_run_state)
 
 # The end-to-end real-data test needs data_processed/reference_2016/*.csv,
 # which is produced by `python data_pipeline/reference_backtest.py` (see
@@ -68,9 +72,14 @@ if(EXISTS "${INDUSTRIAL_CSV}" AND EXISTS "${WEATHER_CSV}")
   add_dependencies(test_end_to_end_real_fixture build_real_fixture)
   add_test(NAME end_to_end_real_fixture
            COMMAND test_end_to_end_real_fixture "${FIXTURE_BIN}" "${INDUSTRIAL_CSV}" "${WEATHER_CSV}")
+
+  add_executable(test_run_state_real_data tests/test_run_state_real_data.cpp)
+  target_link_libraries(test_run_state_real_data PRIVATE evidergy_modbus)
+  add_test(NAME run_state_real_data COMMAND test_run_state_real_data "${INDUSTRIAL_CSV}")
 else()
   message(WARNING
     "edge-collector-cpp: data_processed/reference_2016/*.csv not found -- "
     "run `python data_pipeline/reference_backtest.py` first to enable the "
-    "end-to-end real-fixture test. Unit tests (CRC, SunSpec decode) still run.")
+    "end-to-end real-fixture and real-data run-state tests. Unit tests (CRC, "
+    "SunSpec decode, run-state) still run.")
 endif()

@@ -536,6 +536,65 @@ def module_bess_evidence(industrial: pd.DataFrame) -> dict:
     }
 
 
+def classify_run_state(
+    power_kw: pd.Series,
+    off_threshold_kw: float = 0.05,
+    run_threshold_kw: float = 0.3,
+    debounce_intervals: int = 3,
+) -> pd.Series:
+    """Generic threshold+debounce equipment run-state classifier (OFF/IDLE/RUN,
+    UNKNOWN on missing samples). Intentionally mirrors
+    edge-collector-cpp/include/run_state.hpp exactly (same thresholds, same
+    debounce logic) so the two independent implementations -- one on the edge in
+    C++, one here for the reference backtest -- can be checked against each other.
+    This is an independently designed public prototype, not Evidergy's
+    confidential internal EAF-GW4 production state-recognition algorithm."""
+    states: list[str] = []
+    state = "UNKNOWN"
+    candidate = "UNKNOWN"
+    streak = 0
+    for value in power_kw.to_numpy():
+        if pd.isna(value):
+            candidate, streak, state = "UNKNOWN", 0, "UNKNOWN"
+            states.append(state)
+            continue
+        abs_kw = abs(float(value))
+        if abs_kw >= run_threshold_kw:
+            raw = "RUN"
+        elif abs_kw < off_threshold_kw:
+            raw = "OFF"
+        else:
+            raw = "IDLE"
+        if raw == candidate:
+            streak += 1
+        else:
+            candidate, streak = raw, 1
+        if streak >= debounce_intervals:
+            state = candidate
+        states.append(state)
+    return pd.Series(states, index=power_kw.index, name="run_state")
+
+
+def module_edge_state_recognition(industrial: pd.DataFrame) -> dict:
+    thresholds = {"off_threshold_kw": 0.05, "run_threshold_kw": 0.3, "debounce_intervals": 3}
+    states = classify_run_state(industrial["bess_kw"], **thresholds)
+    counts = states.value_counts()
+    total = int(len(states))
+    return {
+        "site": "industrial2 (real behind-the-meter battery, 2016 full year)",
+        "method": "Generic threshold+debounce state machine (OFF/IDLE/RUN/UNKNOWN), the identical "
+        "algorithm implemented independently in edge-collector-cpp/include/run_state.hpp for the "
+        "C++ edge collector -- a public prototype, not Evidergy's confidential internal EAF-GW4 "
+        "production algorithm.",
+        "thresholds": thresholds,
+        "total_intervals": total,
+        "state_distribution_pct": {state: round(100 * int(count) / total, 1) for state, count in counts.items()},
+        "note": "No real labelled RUN/OFF/IDLE ground truth exists in this public dataset, so this "
+        "reports real state-distribution statistics, not a recall/accuracy claim -- the same honesty "
+        "constraint documented for the PV/BESS fault-injection evidence modules.",
+    }
+
+
 def module_bess_efficiency(industrial: pd.DataFrame) -> dict:
     """Real round-trip efficiency: total discharged energy / total charged energy,
     over every real interval with both channels present in 2016."""
@@ -632,6 +691,7 @@ def main() -> None:
     report["modules"]["pv_evidence"] = module_pv_evidence(residential, weather)
     report["modules"]["bess_evidence"] = module_bess_evidence(industrial)
     report["modules"]["bess_efficiency"] = module_bess_efficiency(industrial)
+    report["modules"]["edge_state_recognition"] = module_edge_state_recognition(industrial)
     report["modules"]["scope2"] = module_scope2(residential)
 
     report_path = OUT / "backtest_report.json"

@@ -22,6 +22,7 @@
 
 #include "canonical_record.hpp"
 #include "modbus_frame.hpp"
+#include "run_state.hpp"
 #include "sunspec_point.hpp"
 
 namespace {
@@ -29,10 +30,18 @@ namespace {
 using evidergy::CanonicalRecord;
 using evidergy::modbus::decode_tcp_frame;
 using evidergy::modbus::registers_from_response_payload;
+using evidergy::state::RunStateClassifier;
+using evidergy::state::RunStateThresholds;
+using evidergy::state::to_string;
 using evidergy::sunspec::PointDef;
 using evidergy::sunspec::PointType;
 using evidergy::sunspec::decode_engineering_value;
 using evidergy::sunspec::evidergy_point_map;
+
+// Same illustrative prototype thresholds as tests/test_run_state_real_data.cpp --
+// see that file's comment for why these numbers, and run_state.hpp for why this is
+// not the confidential production EAF-GW4 algorithm.
+const RunStateThresholds kRunStateThresholds{0.05, 0.3, 3};
 
 std::vector<uint8_t> read_file_bytes(const std::string& path) {
   std::ifstream input(path, std::ios::binary);
@@ -90,14 +99,14 @@ CanonicalRecord decode_record(const std::vector<uint16_t>& registers,
 
 void write_csv_header(std::ostream& out) {
   out << "timestamp,site_id,grid_kw,load_kw,pv_kw,bess_kw,soc_pct,irradiance_wm2,"
-         "temperature_c,quality_flags\n";
+         "temperature_c,quality_flags,run_state\n";
 }
 
-void write_csv_row(std::ostream& out, const CanonicalRecord& r) {
+void write_csv_row(std::ostream& out, const CanonicalRecord& r, const std::string& run_state) {
   out << r.timestamp << ',' << r.site_id << ',' << std::fixed << std::setprecision(4)
       << r.grid_kw << ',' << r.load_kw << ',' << r.pv_kw << ',' << r.bess_kw << ','
       << std::setprecision(1) << r.soc_pct << ',' << "" << ',' << std::setprecision(2)
-      << r.temperature_c << ',' << r.quality_flags << '\n';
+      << r.temperature_c << ',' << r.quality_flags << ',' << run_state << '\n';
 }
 
 }  // namespace
@@ -130,12 +139,17 @@ int main(int argc, char** argv) {
   size_t frames_ok = 0;
   size_t frames_failed = 0;
   const auto start = std::chrono::steady_clock::now();
+  // One classifier instance persists across the whole stream so its debounce state
+  // carries correctly from one decoded interval to the next -- see run_state.hpp.
+  RunStateClassifier state_classifier(kRunStateThresholds);
 
   while (offset < stream.size()) {
     try {
       auto decoded = decode_tcp_frame(stream.data() + offset, stream.size() - offset);
       auto registers = registers_from_response_payload(decoded.frame.payload);
-      write_csv_row(out, decode_record(registers, site_id));
+      CanonicalRecord record = decode_record(registers, site_id);
+      auto state = state_classifier.update(record.bess_kw);
+      write_csv_row(out, record, to_string(state));
       offset += decoded.bytes_consumed;
       ++frames_ok;
     } catch (const std::exception& e) {
