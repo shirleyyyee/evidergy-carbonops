@@ -61,3 +61,21 @@ data_processed/reference_2016/*.pt
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# mobile-app (Capacitor native shells; see mobile-app/README.md)
+mobile-app/node_modules/
+mobile-app/android/local.properties
+mobile-app/android/.gradle/
+mobile-app/android/app/build/
+mobile-app/android/build/
+mobile-app/android/capacitor-cordova-android-plugins/build/
+mobile-app/ios/App/Pods/
+mobile-app/ios/App/build/
+mobile-app/ios/App/DerivedData/
+mobile-app/ios/**/*.xcuserstate
+mobile-app/ios/**/xcuserdata/
+# signing material must never be committed
+mobile-app/**/*.keystore
+mobile-app/**/*.jks
+mobile-app/**/*.p12
+mobile-app/**/*.mobileprovision
